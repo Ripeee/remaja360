@@ -1,14 +1,17 @@
 "use client"
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import * as React from 'react'
 
 export default function Login() {
 
-	const [username, setUsername] = React.useState("")
+	const router = useRouter();
+
+	const [email, setEmail] = React.useState("")
 	const [password, setPassword] = React.useState("")
 
-	function handleUsername(value: string) {
-		setUsername(value)
+	function handleEmail(value: string) {
+		setEmail(value)
 	}
 	function handlePassword(value: string | number) {
 		console.log(value)
@@ -16,19 +19,20 @@ export default function Login() {
 	}
 
 	function login() {
-		console.log(username, password)
-		const pass = password.toString();
+		console.log(email, password)
+		router.push('/profile')
+		// const pass = password.toString();
 		
-		const hasLetter = /[a-zA-Z]/.test(pass);
-		const hasNumber = /\d/.test(pass);
+		// const hasLetter = /[a-zA-Z]/.test(pass);
+		// const hasNumber = /\d/.test(pass);
 		
-		if (hasLetter && hasNumber) {
-			setPassword(pass);
-		} else if (username == "" || password == "") {
-			console.error("Username atau Password harus di isi");
-		} else {
-			console.error("Password must contain both letters and numbers");
-		}
+		// if (hasLetter && hasNumber) {
+		// 	setPassword(pass);
+		// } else if (email == "" || password == "") {
+		// 	console.error("email atau Password harus di isi");
+		// } else {
+		// 	console.error("Password must contain both letters and numbers");
+		// }
 	}
 
   return (
@@ -38,11 +42,11 @@ export default function Login() {
 
 			<div className="mx-8 my-8 flex flex-col gap-10">
 				<div className="items-start">
-					<p className="font-bold text-xl">Username</p>
+					<p className="font-bold text-xl">Email</p>
 					<input
 						type="text"
-						value={username}
-						onChange={(e) => handleUsername(e.target.value)}
+						value={email}
+						onChange={(e) => handleEmail(e.target.value)}
 						className="px-4 h-12 mt-2 w-full bg-slate-200 rounded-xl text-lg"
 					/>
 				</div>
