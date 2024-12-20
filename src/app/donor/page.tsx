@@ -15,12 +15,14 @@ export default function Dashboard() {
 			slug: "pmi-tangsel",
 			name: "PMI Tangerang Selatan",
 			address: "Jalan Pejajaran No.1",
+			phone: '081923971024',
 			image: "/images/rs-1.svg",
 		},
 		{
 			slug: "pmi-jakarta",
 			name: "PMI Jakarta",
 			address: "Jalan Sudirman No.45",
+			phone: '0819239731312',
 			image: "/images/rs-2.svg",
 		},
 	];
@@ -48,13 +50,14 @@ export default function Dashboard() {
 			</div>
 			<h1 className="mx-4 text-lg">
 				berikut adalah tempat yang bisa kamu datangi untuk mendonorkan darahmu!
-			</h1>
+      </h1>
+      
 			{donors.map((donor) => (
 				<Link
 					key={donor.slug}
 					href={{
-						pathname: `/donor/$donor.slug`,
-							query: { name: donor.name, address: donor.address }
+						pathname: `/donor/${donor.slug}`,
+							query: { name: donor.name, address: donor.address, phone: donor.phone },
 					}}
 					className="flex justify-around rounded-xl h-40 bg-blue-200 mx-4 hover:text-white hover:bg-slate-300">
 					<Image

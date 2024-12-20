@@ -1,7 +1,14 @@
 import Link from "next/link";
 import Image from "next/image";
+
+interface ArticleCardProps {
+	imageUrl: string;
+	title: string;
+	link: string;
+}
+
   
-export default function ArticleCard({ imageUrl, title, link }) {
+export default function ArticleCard({ imageUrl, title, link }: ArticleCardProps) {
 	return (
 		<Link href={link} className="rounded-xl bg-black flex flex-col h-60">
 			<Image
@@ -10,6 +17,7 @@ export default function ArticleCard({ imageUrl, title, link }) {
 				width={400}
 				height={300}
 				quality={100}
+				priority
 				className="rounded-t-xl object-cover w-full h-2/3"
 			/>
 			<div className="rounded-b-xl bg-slate-300 px-2 py-1 flex-grow">
