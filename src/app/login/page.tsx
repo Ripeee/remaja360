@@ -20,19 +20,7 @@ export default function Login() {
 
 	function login() {
 		console.log(email, password)
-		router.push('/profile')
-		// const pass = password.toString();
-		
-		// const hasLetter = /[a-zA-Z]/.test(pass);
-		// const hasNumber = /\d/.test(pass);
-		
-		// if (hasLetter && hasNumber) {
-		// 	setPassword(pass);
-		// } else if (email == "" || password == "") {
-		// 	console.error("email atau Password harus di isi");
-		// } else {
-		// 	console.error("Password must contain both letters and numbers");
-		// }
+		router.push('/create')
 	}
 
   return (

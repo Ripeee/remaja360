@@ -2,12 +2,16 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+
 
 export default function Signup() {
   const router = useRouter();
+
+  const [showPassword, setShowPassword] = React.useState(false);
   
-  const [data, setData] = React.useState({
+  const data = ({
 		full_name: 'Kucing',
 		gender: '1',
 		date_of_birth: '07-12-2024',
@@ -31,18 +35,10 @@ export default function Signup() {
 	return (
 		<div className="w-full flex flex-col gap-3">
 			<div className="flex flex-col pb-10 justify-end w-full h-96 bg-blue-500 rounded-[40px] mt-[-240px] mb-12">
-				<h1 className="font-bold text-3xl text-center text-white">Hi, {data.full_name}!</h1>
+				<h1 className="font-bold text-3xl text-center text-white">
+					Hi, {data.full_name}!
+				</h1>
 			</div>
-
-      <div className="flex justify-center">
-        <Image
-          src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          width={400}
-          height={400}
-          alt="profile"
-          className="w-60 h-60 rounded-full object-cover"
-        />
-      </div>
 
 			<div className="mx-8 my-8 flex flex-col gap-6">
 				<div className="items-start">
@@ -110,9 +106,17 @@ export default function Signup() {
 
 				<div className="items-start">
 					<p className="font-bold text-xl">Password</p>
-					<div className="flex items-center px-4 h-12 mt-2 w-full bg-slate-200 rounded-xl text-lg">
-            <p className="text-md">{data.password}</p>
-            {/* <p className="text-md">{maskedPassword}</p> */}
+					<div className="flex justify-between items-center px-4 h-12 mt-2 w-full bg-slate-200 rounded-xl text-lg">
+						<p className="text-md">{showPassword ? data.password : maskedPassword}</p>
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className=" top-2 right-2">
+              <FontAwesomeIcon
+                icon={showPassword ? faEyeSlash : faEye}
+                className="text-gray-500"
+              />
+            </button>
 					</div>
 				</div>
 

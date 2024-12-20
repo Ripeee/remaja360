@@ -5,6 +5,7 @@ import "./globals.css";
 import * as React from "react";
 import SplashScreen from "./components/SplashScreen";
 import { usePathname } from "next/navigation";
+import Navbar from "./components/Navbar";
 
 const istokWeb = Istok_Web({
 	subsets: ["latin"],
@@ -24,7 +25,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
 	const [showSplash, setShowSplash] = React.useState(true);
-	const pathname = usePathname(); // Ambil path saat ini
+	const pathname = usePathname(); // Ambil path saat 
+	
 
 	React.useEffect(() => {
 		if (pathname === "/") {
@@ -39,14 +41,14 @@ export default function RootLayout({
 		}
 	}, [pathname]);
 
-
 	return (
 		<html lang="en">
 			<body
-        className={`${istokWeb.variable} ${inter.variable} antialiased md:bg-blue-300`}>
-        <div className="flex justify-center mx-auto bg-white min-h-screen max-w-screen-sm">
-				{pathname === "/" && showSplash ? <SplashScreen /> : children}
-        </div>
+				className={`${istokWeb.variable} ${inter.variable} antialiased md:bg-blue-300`}>
+				<div className="flex justify-center mx-auto bg-white min-h-screen max-w-screen-sm">
+					{pathname === "/" && showSplash ? <SplashScreen /> : children}
+					{pathname !== '/login' && pathname !== '/signup' && <Navbar />}
+				</div>
 			</body>
 		</html>
 	);
