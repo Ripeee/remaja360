@@ -19,6 +19,24 @@ export default function Dashboard() {
 		"https://images.unsplash.com/photo-1731429945593-61610daebc11?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxMnx8fGVufDB8fHx8fA%3D%3D",
 	];
     
+	const article = [
+		{
+			id: 1,
+			image: "https://images.unsplash.com/photo-1636759805271-6299d2666773?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aGVhZGFjaGV8ZW58MHx8MHx8fDA%3D",
+			title: "Ngobrol seputar Anemia Salah satu Ayan",
+		},
+		{
+			id: 2,
+			image: "https://images.unsplash.com/photo-1634906344426-2ba0e7c91b09?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzV8fGhlYWRhY2hlfGVufDB8fDB8fHww",
+			title: "Salah satu Tipe Ayan",
+		},
+		{
+			id: 3,
+			image: "https://images.unsplash.com/photo-1634906344426-2ba0e7c91b09?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzV8fGhlYWRhY2hlfGVufDB8fDB8fHww",
+			title: " satu Tipe Ayan",
+		},
+	];
+
 	const name = 'Kucing'
 
 	return (
@@ -31,7 +49,7 @@ export default function Dashboard() {
 			</div>
 
 			{/* Swiper Section */}
-			<div className="swiper-container mx-10 h-60 rounded-xl">
+			<div className="swiper-container mx-10 h-60 rounded-xl mt-[-50px]">
 				<Swiper
 					modules={[Navigation, Pagination, Autoplay]}
 					spaceBetween={30}
@@ -59,7 +77,7 @@ export default function Dashboard() {
 			</div>
 
 			{/* Donor Info Section */}
-			<Link
+			{/* <Link
 				href="/donor"
 				className="flex justify-between items-center mt-10 rounded-xl h-40 bg-blue-200 mx-10 hover:text-white hover:bg-slate-300">
 				<Image
@@ -73,22 +91,20 @@ export default function Dashboard() {
 				<div className="rounded-r-xl w-1/2 px-2 py-1 h-full flex items-center">
 					<p className="text-2xl font-bold">Informasi Donor Darah</p>
 				</div>
-			</Link>
+			</Link> */}
 
 			{/* Popular Articles Section */}
 			<div className="mx-8 my-8 flex flex-col gap-6 items-center">
 				<h1 className="font-bold text-2xl">Artikel Terpopuler</h1>
 				<div className="grid grid-cols-2 gap-6">
-					<ArticleCard
-						imageUrl="https://images.unsplash.com/photo-1636759805271-6299d2666773?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aGVhZGFjaGV8ZW58MHx8MHx8fDA%3D"
-						title="Ngobrol seputar Anemia Salah satu Ayan"
-						link="/dashboard"
-					/>
-					<ArticleCard
-						imageUrl="https://images.unsplash.com/photo-1634906344426-2ba0e7c91b09?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzV8fGhlYWRhY2hlfGVufDB8fDB8fHww"
-						title="Ngobrol seputar Anemia Salah satu Ayan"
-						link="/dashboard"
-					/>
+					{article.map((article) => (
+						<Link href={`/article/${article.id}`} key={article.id} className="rounded-xl bg-black flex flex-col h-60">
+							<ArticleCard
+								imageUrl={article.image}
+								title={article.title}
+							/>
+						</Link>
+					))}
 				</div>
 				<div className="flex justify-center font-bold my-4">
 					Made with ❤️ in a Quiet Place

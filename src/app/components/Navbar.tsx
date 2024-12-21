@@ -12,37 +12,37 @@ export default function Navbar() {
 			<Link
 				href="/dashboard"
 				className={[
-					pathname === "/dashboard" ? "text-white" : "text-slate-700",
+					pathname.startsWith("/dashboard") ? "text-white" : "text-slate-700",
 					" gap-1.5 flex flex-col items-center",
 				].join("")}>
-				<FontAwesomeIcon icon={faHouse}  className="h-5"/>
+				<FontAwesomeIcon icon={faHouse} className="h-5" />
 				<p className="">Home</p>
 			</Link>
 			<Link
-				href="/artikel"
+				href="/article"
 				className={[
-					pathname === "/article" ? "text-white" : "text-slate-700",
+					pathname.startsWith("/article") ? "text-white" : "text-slate-700",
 					" gap-1.5 flex flex-col items-center",
 				].join("")}>
-				<FontAwesomeIcon icon={faNewspaper}  className="h-5"/>
+				<FontAwesomeIcon icon={faNewspaper} className="h-5" />
 				<p className="">Artikel</p>
 			</Link>
 			<Link
-				href="/quiz"
+				href="/e-nurse"
 				className={[
-					pathname === "/quiz" ? "text-white" : "text-slate-700",
+					pathname.startsWith("/e-nurse") ? "text-white" : "text-slate-700",
 					" gap-1.5 flex flex-col items-center",
 				].join("")}>
-				<FontAwesomeIcon icon={faUserNurse}  className="h-5"/>
+				<FontAwesomeIcon icon={faUserNurse} className="h-5" />
 				<p className="">E-Nurse</p>
 			</Link>
 			<Link
 				href="/profile"
 				className={[
-					pathname === "/profile" ? "text-white" : "text-slate-700",
+					pathname.startsWith("/profile") ? "text-white" : "text-slate-700",
 					" gap-1.5 flex flex-col items-center",
 				].join("")}>
-				<FontAwesomeIcon icon={faUser}  className="h-5"/>
+				<FontAwesomeIcon icon={faUser} className="h-5" />
 				<p className="">Profile</p>
 			</Link>
 		</div>

@@ -22,9 +22,21 @@ body {
   background: var(--background); */
   /* font-family: Arial, Helvetica, sans-serif; */
   font-family: var(--font-istok-web);
-
 }
-/* Tambahkan ini di globals.css */
+
+/* Hide scrollbar for all browsers */
+::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Edge */
+}
+
+html {
+  scrollbar-width: none; /* Firefox */
+}
+
+body {
+  /* overflow: hidden; disable scrolling */
+  overflow: auto; /* Allow Scroll without scrollbar */
+}
 
 .swiper {
   width: 100%;

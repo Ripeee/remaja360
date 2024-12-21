@@ -1,16 +1,14 @@
-import Link from "next/link";
 import Image from "next/image";
 
 interface ArticleCardProps {
 	imageUrl: string;
 	title: string;
-	link: string;
 }
 
   
-export default function ArticleCard({ imageUrl, title, link }: ArticleCardProps) {
+export default function ArticleCard({ imageUrl, title}: ArticleCardProps) {
 	return (
-		<Link href={link} className="rounded-xl bg-black flex flex-col h-60">
+		<>
 			<Image
 				src={imageUrl}
 				alt={title}
@@ -20,12 +18,12 @@ export default function ArticleCard({ imageUrl, title, link }: ArticleCardProps)
 				priority
 				className="rounded-t-xl object-cover w-full h-2/3"
 			/>
-			<div className="rounded-b-xl bg-slate-300 px-2 py-1 flex-grow">
+			<div className="rounded-b-xl bg-slate-300 px-2 py-2 flex-grow">
 				<p className="font-bold text-sm mb-2">{title}</p>
 				<p className="text-sm underline text-slate-500">
 					Baca disini
 				</p>
 			</div>
-		</Link>
+		</>
 	);
 }

@@ -40,7 +40,7 @@ export default function Signup() {
 				</h1>
 			</div>
 
-			<div className="mx-8 my-8 flex flex-col gap-6">
+			<div className="mx-8 mb-24 flex flex-col gap-6">
 				<div className="items-start">
 					<p className="font-bold text-xl">Nama Lengkap</p>
 					<div className="flex items-center px-4 h-12 mt-2 w-full bg-slate-200 rounded-xl text-lg">
