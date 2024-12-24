@@ -3,10 +3,12 @@
 import Link from 'next/link';
 import * as React from 'react'
 import { useRouter } from 'next/navigation';
+import axios from 'axios';
 
 export default function Signup() {
 	const router = useRouter()
 
+	const [show, setShow] = React.useState(false)
 	const [error, setError] = React.useState("")
 	const [gender, setGender] = React.useState("0")
 	const [fullname, setFullname] = React.useState("")
@@ -23,27 +25,31 @@ export default function Signup() {
 	function JenisKelamin(e: string) {
 		setGender(e)
 	}
+	function Kelas(e: string) {
+		setGrade(e)
+	}
 
-	function SignUp() {
-		const data: object = {
-			full_name: fullname,
+	const SignUp = () => {
+		const data = {
+			name: fullname,
 			gender: gender,
-			date_of_birth: dateBirth,
-			place_of_birth: placeBirth,
+			date_birth: dateBirth,
+			place_birth: placeBirth,
 			address: address,
-			last_school: lastSchool,
-			major: major,
+			school_origin: lastSchool,
+			major_class: major,
 			grade: grade,
 			email: email,
 			phone_number: phone,
 			password: password,
 		};
-		// console.log(data);\
+
 		const pass = password.toString();
 
 		const hasLetter = /[a-zA-Z]/.test(pass);
 		const hasNumber = /\d/.test(pass);
 
+		// console.log(data, "success");
 		if (
 			fullname !== "" ||
 			dateBirth !== "" ||
@@ -56,8 +62,19 @@ export default function Signup() {
 			password !== ""
 		) {
 			if (hasLetter && hasNumber) {
-				console.log(data, 'success');
-				router.push("/login");
+
+			// Masuk API Regist disini
+			axios
+				.post("http://192.168.1.8:3000/api/users", data)
+				.then((response) => {
+					console.log("Response:", response.data);
+					setShow(true)
+					// Redirect ke halaman login
+					router.push("/login");
+				})
+				.catch((error) => {
+					console.error("Error:", error);
+				});
 			} else {
 				setError("Password harus Mempunyai Huruf dan Angka!");
 			}
@@ -71,12 +88,13 @@ export default function Signup() {
 			<div className="w-full h-80 bg-blue-500 rounded-full mt-[-240px] mb-12"></div>
 			<h1 className="font-bold text-4xl text-center">Sign Up</h1>
 
-			<div className="mx-8 my-8 flex flex-col gap-10">
+			<form className="mx-8 my-8 flex flex-col gap-10">
 				<div className="items-start">
 					<p className="font-bold text-xl">Nama Lengkap</p>
 					<input
 						type="text"
 						value={fullname}
+						autoComplete='name'
 						onChange={(e) => setFullname(e.target.value)}
 						className="px-4 h-12 mt-2 w-full bg-slate-200 rounded-xl text-lg"
 					/>
@@ -141,12 +159,16 @@ export default function Signup() {
 					<p className="font-bold text-xl">Kelas</p>
 					<select
 						onChange={(e) => {
-							setGrade(e.target.value);
+							Kelas(e.target.value);
 						}}
+						defaultValue=""
 						className="px-4 h-12 mt-2 w-full bg-slate-200 rounded-xl text-lg">
-						<option value="x">X</option>
-						<option value="xi">XI</option>
-						<option value="xii">XII</option>
+						<option value="" disabled>
+							Pilih Kelas
+						</option>
+						<option value="X">X</option>
+						<option value="XI">XI</option>
+						<option value="XII">XII</option>
 					</select>
 				</div>
 				<div className="items-start">
@@ -154,6 +176,7 @@ export default function Signup() {
 					<input
 						type="text"
 						value={email}
+						autoComplete='email'
 						onChange={(e) => setEmail(e.target.value)}
 						className="px-4 h-12 mt-2 w-full bg-slate-200 rounded-xl text-lg"
 					/>
@@ -163,6 +186,7 @@ export default function Signup() {
 					<input
 						type="number"
 						value={phone}
+						inputMode='numeric'
 						onChange={(e) => setPhone(e.target.value)}
 						className="px-4 h-12 mt-2 w-full bg-slate-200 rounded-xl text-lg"
 					/>
@@ -173,6 +197,7 @@ export default function Signup() {
 					<input
 						type="password"
 						value={password}
+						autoComplete='current-password'
 						onChange={(e) => setPassword(e.target.value)}
 						className="px-4 h-12 mt-2 w-full bg-slate-200 rounded-xl text-lg"
 					/>
@@ -181,11 +206,16 @@ export default function Signup() {
 				<div className="flex flex-col gap-2">
 					<button
 						onClick={SignUp}
-						className="px-4 py-2 bg-blue-500 text-white text-xl font-bold rounded-full w-1/2 mx-auto">
+						className="px-4 py-2 bg-blue-500 text-white text-xl font-bold rounded-full w-1/2 mx-auto"
+						disabled={show}
+					>
 						Sign Up
 					</button>
 					{error != "" && (
 						<p className="text-center text-red-600 font-bold">{error}</p>
+					)}
+					{show && (
+						<p className="text-center text-green-600 font-bold">Berhasil Daftar, Silahkan login!</p>
 					)}
 				</div>
 
@@ -199,7 +229,7 @@ export default function Signup() {
 						</Link>
 					</div>
 				</div>
-			</div>
+			</form>
 		</div>
 	);
 }

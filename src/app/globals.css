@@ -60,3 +60,18 @@ body {
   height: 100%;
   object-fit: cover;
 }
+.calendar-day {
+	padding: 10px;
+	border-radius: 50%;
+	cursor: pointer;
+	text-align: center;
+}
+
+.calendar-day.selected {
+	background-color: #f87171; /* Warna merah */
+	color: white;
+}
+
+.calendar-day:hover {
+	background-color: #e5e7eb; /* Warna abu-abu */
+}

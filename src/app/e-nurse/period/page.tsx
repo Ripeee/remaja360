@@ -1,8 +1,6 @@
 "use client";
 
 import * as React from "react";
-// import Image from "next/image";
-// import Link from "next/link";
 
 export default function Period() {
 	const name = "KUCING";
@@ -19,8 +17,10 @@ export default function Period() {
 			<h1 className="font-bold text-center text-2xl underline mt-10">
 				Kalender Menstruasi
 			</h1>
-      <div className="flex flex-col mx-10 my-8 rounded-xl">
-        <p>test</p>
+			<div className="flex flex-col mx-10 my-8 rounded-xl">
+				<p>test</p>
+			</div>
+			<div className="flex gap-x-4">
 			</div>
 		</div>
 	);

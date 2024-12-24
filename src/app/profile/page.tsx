@@ -4,17 +4,20 @@ import * as React from "react";
 import { useRouter } from "next/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-
+import dayjs from "dayjs";
+import axios from "axios";
 
 export default function Signup() {
   const router = useRouter();
 
   const [showPassword, setShowPassword] = React.useState(false);
   
-  const data = ({
+	const dateFormat = dayjs("2019-01-25").format("DD/MM/YYYY");
+  
+	const data = ({
 		full_name: 'Kucing',
 		gender: '1',
-		date_of_birth: '07-12-2024',
+		date_of_birth: dateFormat,
 		place_of_birth: 'Palembang',
 		address: 'Jalan Kecubang',
 		last_school: 'SMA N 13 Jakarta',
@@ -31,6 +34,14 @@ export default function Signup() {
     console.log('logout')
     router.push('/profile')
 	}
+
+	React.useEffect(() => {
+		axios.get("/api/users", {
+				id: 1,
+		}).then((res) => {
+			console.log(res.data)
+		})
+	}, [])
 
 	return (
 		<div className="w-full flex flex-col gap-3">
