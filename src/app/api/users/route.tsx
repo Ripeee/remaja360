@@ -1,6 +1,21 @@
 import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
 
+// Define the interface for the input data
+interface CreateUserInput {
+  name: string;
+  gender: string;
+  place_birth: string;
+  date_birth: string; // Use string for easier input validation
+  address: string;
+  school_origin: string;
+  major_class: string;
+  grade: string;
+  email: string;
+  phone_number: string;
+  password: string;
+}
+
 // Inisialisasi Prisma Client
 const prisma = new PrismaClient();
 
@@ -12,10 +27,14 @@ const handleError = (message: string) => {
 // Fungsi GET: Mengambil semua pengguna
 export async function GET() {
   try {
-    const users = await prisma.user.findMany();
+		const users = await prisma.user.findMany({
+			orderBy: {
+				id: "asc", // Sort by `id` in ascending order
+			},
+		});
     return NextResponse.json(users, { status: 200 });
-  } catch (error) {
-    return handleError("Gagal mengambil data pengguna");
+	} catch (error) {
+    return handleError(error + "Gagal mengambil data pengguna");
   }
 }
 
@@ -62,12 +81,12 @@ export async function POST(req: Request) {
 
 		return NextResponse.json(result, { status: isUpdating ? 200 : 201 });
 	} catch (error) {
-		return handleError("Gagal membuat atau memperbarui pengguna");
+		return handleError(error + "Gagal membuat atau memperbarui pengguna");
 	}
 }
 
 // Fungsi untuk membuat pengguna
-const createUser = async (data: any) => {
+const createUser = async (data: CreateUserInput) => {
 	const {
 		name,
 		gender,
@@ -114,7 +133,7 @@ export async function DELETE(req: Request) {
 
     return NextResponse.json({ message: "Pengguna berhasil dihapus" }, { status: 200 });
   } catch (error) {
-    return handleError("Gagal menghapus pengguna");
+    return handleError(error + "Gagal menghapus pengguna");
   }
 }
 

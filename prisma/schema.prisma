@@ -28,4 +28,18 @@ model User {
   password      String
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
+    articles Article[] // One-to-Many relationship with Article
+
+}
+
+model Article {
+  id          Int      @id @default(autoincrement())
+  title       String
+  content     String
+  category    String
+  image       String
+  author      User     @relation(fields: [authorId], references: [id])
+  authorId    Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }

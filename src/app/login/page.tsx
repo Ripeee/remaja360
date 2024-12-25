@@ -1,11 +1,12 @@
 "use client"
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+// import { useRouter } from 'next/navigation';
 import * as React from 'react'
+import axios from 'axios';
 
 export default function Login() {
 
-	const router = useRouter();
+	// const router = useRouter();
 
 	const [email, setEmail] = React.useState("")
 	const [password, setPassword] = React.useState("")
@@ -20,7 +21,14 @@ export default function Login() {
 
 	function login() {
 		console.log(email, password)
-		router.push('/create')
+		// router.push('/create')
+
+		axios.post("/api/auth/login", {
+			email: email,
+			password: password
+		}).then((res) => {
+			console.log(res.data)
+		})
 	}
 
   return (
