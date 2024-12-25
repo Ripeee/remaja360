@@ -1,12 +1,10 @@
+import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
-import { NextResponse } from "next/server";
 
 const prisma = new PrismaClient();
 
-export async function GET(request: Request, { params }: any) {
-	console.log("params", params); // Debugging the params
-
-	const { id } = params; // Destructure the 'id' from params
+export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+	const { id } = await params; // Destructure the 'id' from params
 
 	// Validate if 'id' is a number
 	if (isNaN(Number(id))) {
@@ -26,18 +24,15 @@ export async function GET(request: Request, { params }: any) {
 	} catch (error) {
 		console.error("Error fetching user:", error);
 		return NextResponse.json(
-			{ message: "Internal server error", error: error.message },
+			{ message: "Internal server error", error },
 			{ status: 500 },
 		);
 	}
 }
 
-export async function POST(
-	req: Request,
-	{ params }: { params: { id: string } },
-) {
+export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+	const { id } = await params;
 
-	const { id }= await params
 	try {
 		const body = await req.json();
 		const userId = parseInt(id);
@@ -91,8 +86,9 @@ export async function POST(
 	}
 }
 
-export async function PUT(req: Request, { params }: any) {
-	const { id } = params; // Get id from the dynamic route parameter
+export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+	
+	const { id } = await params; // Get id from the dynamic route parameter
 
 	try {
 		// Get the data to update from the request body
@@ -114,7 +110,7 @@ export async function PUT(req: Request, { params }: any) {
 	} catch (error) {
 		console.error("Error updating user:", error);
 		return NextResponse.json(
-			{ message: "Failed to update user", error: error.message },
+			{ message: "Failed to update user", error },
 			{ status: 500 },
 		);
 	}

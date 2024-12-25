@@ -37,7 +37,9 @@ export default function Signup() {
 
 	React.useEffect(() => {
 		axios.get("/api/users", {
-				id: 1,
+			params: {
+				id:1
+			}
 		}).then((res) => {
 			console.log(res.data)
 		})

@@ -15,6 +15,6 @@ export default async function handler(
 		const { payload } = await jwtVerify(token, secretKey);
 		return res.status(200).json({ message: "Token is valid", payload });
 	} catch (error) {
-		return res.status(401).json({ error: "Invalid token" });
+		return res.status(401).json({ error});
 	}
 }

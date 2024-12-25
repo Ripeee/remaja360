@@ -2,10 +2,10 @@
 
 import * as React from "react";
 // import Image from "next/image";
-import Link from "next/link";
+// import Link from "next/link";
 
 export default function ArtikelCreate() {
-	const [name, setName] = React.useState("Kucing");
+	const name = 'Kucing'
 
 	return (
 		<div className="w-full flex flex-col gap-3">

@@ -3,7 +3,7 @@ import * as React from 'react'
 import type { Metadata } from "next";
 // import Login from './login/page';
 import Link from 'next/link';
-import {decodeJwt} from 'jose'
+// import {decodeJwt} from 'jose'
 
 export const metadata: Metadata = {
 	title: "Create Next App",
@@ -11,10 +11,10 @@ export const metadata: Metadata = {
 };
 
 export default function Home() {
-	const token = "your-jwt-token"; // Replace with a valid JWT
+	// const token = "your-jwt-token"; // Replace with a valid JWT
 
-	const decoded = decodeJwt(token);
-	console.log(decoded); // Outputs the decoded JWT payload
+	// const decoded = decodeJwt(token);
+	// console.log(decoded); // Outputs the decoded JWT payload
 
 	return (
 		<div className="w-full flex flex-col items-center gap-3">
