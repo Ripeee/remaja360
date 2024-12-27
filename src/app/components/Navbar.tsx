@@ -19,9 +19,9 @@ export default function Navbar() {
 				<p className="">Home</p>
 			</Link>
 			<Link
-				href="/article"
+				href="/articles"
 				className={[
-					pathname.startsWith("/article") ? "text-white" : "text-slate-700",
+					pathname.startsWith("/articles") ? "text-white" : "text-slate-700",
 					" gap-1.5 flex flex-col items-center",
 				].join("")}>
 				<FontAwesomeIcon icon={faNewspaper} className="h-5" />
