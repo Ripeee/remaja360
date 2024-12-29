@@ -48,40 +48,34 @@ export async function GET(req: NextRequest) {
 
 // Fungsi POST: Membuat Artikel baru
 export async function POST(req: Request) {
-	try {
-		const body = await req.json();
-		const { id } = body;
+  try {
+    const body = await req.json();
+    const { id, title } = body;
 
-		// Validasi panjang konten
-		// if (content.length > 100000) {
-		// 	// Contoh: Batasi hingga 100.000 karakter
-		// 	return NextResponse.json(
-		// 		{ error: "Konten terlalu panjang. Maksimal 100.000 karakter." },
-		// 		{ status: 400 },
-		// 	);
-		// }
+    // Generate slug if not provided
+    const slug = body.slug || title?.toLowerCase().replace(/\s+/g, '-') || '';
 
-		const articleData = { ...body };
+    const articleData = { ...body, slug };
 
-		let result;
+    let result;
 
-		if (id) {
-			// Update existing article
-			result = await prisma.article.update({
-				where: { id },
-				data: articleData,
-			});
-		} else {
-			// Create new article
-			result = await prisma.article.create({
-				data: articleData,
-			});
-		}
+    if (id) {
+      // Update existing article
+      result = await prisma.article.update({
+        where: { id },
+        data: articleData,
+      });
+    } else {
+      // Create new article
+      result = await prisma.article.create({
+        data: articleData,
+      });
+    }
 
-		return NextResponse.json(result, { status: id ? 200 : 201 });
-	} catch (error) {
-		return handleError(error + "Gagal membuat atau memperbarui Artikel");
-	}
+    return NextResponse.json(result, { status: id ? 200 : 201 });
+  } catch (error) {
+    return handleError(error + ' Gagal membuat atau memperbarui Artikel');
+  }
 }
 
 // Fungsi untuk membuat Artikel

@@ -2,10 +2,16 @@
 
 import * as React from "react";
 // import Image from "next/image";
+// import dynamic from "next/dynamic";
 import { useSearchParams } from "next/navigation";
+import "draft-js/dist/Draft.css";
+
+// const DraftEditor = dynamic(() => import("@/app/components/DraftEditor"), {
+// 	ssr: false,
+// });
+
 
 export default function ArtikelDetail() {
-
 	const searchParams = useSearchParams();
   const [content, setContent] = React.useState<string>("");
   const [title, setTitle] = React.useState<string>("");
@@ -14,7 +20,7 @@ export default function ArtikelDetail() {
 	const [currentPage, setCurrentPage] = React.useState<number>(1);
 	const [loading, setLoading] = React.useState<boolean>(false);
 
-	const limit = 100; // Jumlah kata per halaman
+	const limit = 150; // Jumlah kata per halaman
 
 	const slug = searchParams.get("slug");
 
@@ -65,10 +71,14 @@ export default function ArtikelDetail() {
 			</div>
 
 			<div className="flex flex-col justify-between h-full mb-24">
-				<h1 className="text-center font-bold text-2xl underline my-4">{title}</h1>
+				<h1 className="text-center font-bold text-2xl underline my-4">
+					{title}
+				</h1>
+				{/* <DraftEditor /> */}
 
-				<div className="mx-8 text-start mt-[-80px]">
-					<p className="whitespace-pre-line">{content}</p>
+				<div className="mx-8 text-start mt-[-40px]">
+					<div dangerouslySetInnerHTML={{ __html: content }}></div>
+					{/* <p className="whitespace-pre-line">{content}</p> */}
 				</div>
 
 				<div className="mx-16">
@@ -97,7 +107,6 @@ export default function ArtikelDetail() {
 					</div>
 				</div>
 			</div>
-
 		</div>
 	);
 }
