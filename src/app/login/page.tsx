@@ -1,12 +1,12 @@
 "use client"
 import Link from 'next/link';
-// import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import * as React from 'react'
 import axios from 'axios';
 
 export default function Login() {
 
-	// const router = useRouter();
+	const router = useRouter();
 
 	const [email, setEmail] = React.useState("")
 	const [password, setPassword] = React.useState("")
@@ -19,16 +19,30 @@ export default function Login() {
 		setPassword(String(value))
 	}
 
-	function login() {
+	async function login() {
 		console.log(email, password)
-		// router.push('/create')
+		try {
+			const response = await axios.post("/api/auth/login", {
+				email,
+				password,
+			});
 
-		axios.post("/api/auth/login", {
-			email: email,
-			password: password
-		}).then((res) => {
-			console.log(res.data)
-		})
+			if (response.data.token) {
+				// Store the token in localStorage
+				localStorage.setItem("token", response.data.token);
+
+				// Optionally, you can store the user data as well
+				localStorage.setItem("user", JSON.stringify(response.data.user));
+
+				// Redirect user to another page, e.g., home page
+				router.push("/dashboard");
+			} else {
+				alert("Invalid credentials");
+			}
+		} catch (err) {
+			alert("Something went wrong");
+			console.error(err);
+		}
 	}
 
   return (
@@ -36,7 +50,7 @@ export default function Login() {
 			<div className="w-full h-80 bg-blue-500 rounded-full mt-[-240px] mb-12"></div>
 			<h1 className="font-bold text-4xl text-center">Login</h1>
 
-			<div className="mx-8 my-8 flex flex-col gap-10">
+			<form onSubmit={login} className="mx-8 my-8 flex flex-col gap-10">
 				<div className="items-start">
 					<p className="font-bold text-xl">Email</p>
 					<input
@@ -76,7 +90,7 @@ export default function Login() {
 						</Link>
 					</div>
 				</div>
-			</div>
+			</form>
 		</div>
 	);
 }

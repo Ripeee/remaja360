@@ -2,7 +2,8 @@
 import * as React from 'react'
 import type { Metadata } from "next";
 // import Login from './login/page';
-import Link from 'next/link';
+// import Link from 'next/link';
+import Opening from './components/Opening';
 // import {decodeJwt} from 'jose'
 
 export const metadata: Metadata = {
@@ -18,9 +19,10 @@ export default function Home() {
 
 	return (
 		<div className="w-full flex flex-col items-center gap-3">
-			<Link href="/login" className="bg-green-400 font-bold text-4xl">
+			<Opening />
+			{/* <Link href="/login" className="bg-green-400 font-bold text-4xl">
 				Login
-			</Link>
+			</Link> */}
 			{/* <p>{decoded}</p> */}
 			{/* <Login /> */}
 		</div>

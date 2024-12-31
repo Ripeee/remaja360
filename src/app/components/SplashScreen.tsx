@@ -9,6 +9,7 @@ export default function SplashScreen() {
 				alt="SplashScreen"
 				width={300}
 				height={300}
+				priority={true}
 				className="w-full sm:w-48 sm:h-48 md:w-80 md:h-80"
 			/>
 		</div>
