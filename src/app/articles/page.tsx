@@ -58,8 +58,7 @@ export default function Artikel() {
 	]
 
 	return (
-		<div className="w-full flex flex-col gap-3 h-screen justify-between">
-			<div className="h-full">
+		<div className="w-full flex flex-col gap-3 min-h-screen justify-between">
 				<div className="flex flex-col pb-10 justify-end w-full h-96 bg-blue-500 rounded-[40px] mt-[-240px]">
 					<div className="mx-10">
 						<h1 className="font-bold text-4xl text-white">Hi, {name}!</h1>
@@ -122,7 +121,6 @@ export default function Artikel() {
 						</div>
 				</div>
 					))}
-			</div>
 			<div className="flex justify-center font-bold mb-24">
 				Made with ❤️ in a Quiet Place
 			</div>

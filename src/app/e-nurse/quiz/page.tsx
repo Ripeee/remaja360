@@ -10,26 +10,31 @@ export default function Quiz() {
   const category = [
     {
       id: 1,
+      slug: "rokok",
       name: "Rokok",
       image: "/images/smoking.svg",
     },
     {
       id: 2,
+      slug: "narkoba",
       name: "Narkoba",
       image: "/images/medicine.svg",
     },
     {
       id: 3,
+      slug: "seks-bebas",
       name: "Seks Bebas",
       image: "/images/sex.svg",
     },
     {
       id: 4,
+      slug: "anemia",
       name: "Anemia",
       image: "/images/anemia.svg",
     },
     {
       id: 5,
+      slug: "hipertensi",
       name: "Hipertensi",
       image: "/images/hypertension.svg",
     },
@@ -52,8 +57,8 @@ export default function Quiz() {
           <Link
             key={cat.id}
             href={{
-              pathname: `/e-nurse/quiz/${cat.name.toLowerCase()}`,
-              query: { id: cat.id, category: cat.name, image: cat.image },
+              pathname: `/e-nurse/quiz/${cat.slug}`,
+              query: { id: cat.id },
             }}
             className="flex justify-between px-10 rounded-xl h-40 bg-sky-100 mx-4 hover:text-white hover:bg-blue-500">
             <div className="py-4 h-full flex justify-between">
