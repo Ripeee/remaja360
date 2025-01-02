@@ -89,7 +89,11 @@ body {
   background-color: aqua !important;
   color: black !important;
 }
-.masa-ovulasi {
+.masa-subur {
   background-color: lime !important;
   color: black !important;
+}
+.masa-siklus-selanjutnya {
+  background-color: #cce4ff !important;
+  color: #0059b3 !important;
 }
