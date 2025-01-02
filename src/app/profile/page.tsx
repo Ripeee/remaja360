@@ -27,7 +27,8 @@ export default function Signup() {
 	}
 
 	const [data, setData] = React.useState<UserData | null>(null);
-  
+  const [name, setName] = React.useState("");
+	
 	const [isLoading, setIsLoading] = React.useState<boolean>(true);
 
 	
@@ -41,10 +42,13 @@ export default function Signup() {
     router.push('/')
 	}
 	
-	const user = localStorage.getItem("user");
-	const id = JSON.parse(user || "{}").id || null;
-	
 	React.useEffect(() => {
+
+		const user = localStorage.getItem("user");
+		const userData = JSON.parse(user || "{}");
+		setName(userData.name || "User");
+		const id = userData.id || null;
+
 		const fetchUserData = async () => {
 			const token = localStorage.getItem("token");
 			
@@ -68,7 +72,7 @@ export default function Signup() {
 				// console.log(response.data, "data User");
 			} catch (error) {
 				// Jika token tidak valid atau kedaluwarsa, hapus token dan arahkan ke halaman login
-				// if (error.response?.status === 401) {
+				
 				if (axios.isAxiosError(error) && error.response?.status === 401) {
 					localStorage.removeItem("token");
 					router.push("/");
@@ -80,14 +84,14 @@ export default function Signup() {
 		if (id) {
 			fetchUserData();
 		}
-	}, [id, router]);
+	}, [router]);
 
 
 	return (
 		<div className="w-full flex flex-col gap-3">
 			<div className="flex flex-col pb-10 justify-end w-full h-96 bg-blue-500 rounded-[40px] mt-[-240px] mb-12">
 				<h1 className="font-bold text-3xl text-center text-white">
-					Hi, {data?.name}!
+					Hi, {name}!
 				</h1>
 			</div>
 

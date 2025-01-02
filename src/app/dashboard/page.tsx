@@ -37,10 +37,14 @@ export default function Dashboard() {
 		},
 	];
 
-	const user = localStorage.getItem('user')
-	
-	const name = JSON.parse(user || "{}").name || null;
+	const [name, setName] = React.useState("");
 
+	React.useEffect(() => {
+		// This runs only on the client side
+		const user = localStorage.getItem("user");
+		const userData = JSON.parse(user || "{}");
+		setName(userData.name || "User");
+	}, []);
 
 	return (
 		<div className="w-full flex flex-col gap-4 mb-10">
