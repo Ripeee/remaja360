@@ -37,7 +37,10 @@ export default function Dashboard() {
 		},
 	];
 
-	const name = 'Kucing'
+	const user = localStorage.getItem('user')
+	
+	const name = JSON.parse(user || "{}").name || null;
+
 
 	return (
 		<div className="w-full flex flex-col gap-4 mb-10">

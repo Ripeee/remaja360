@@ -8,20 +8,21 @@ import Image from "next/image";
 import {useRouter} from "next/navigation";
 
 export default function CategoryQuiz() {
-
-	const router = useRouter()
+	const router = useRouter();
 
 	const searchParams = useSearchParams();
 
-	const id = searchParams.get('id');
+	const id = searchParams.get("id");
 
 	const [isLoading, setIsLoading] = React.useState<boolean>(true);
+	const [token, setToken] = React.useState<string | null>(null);
 	const [selectedAnswers, setSelectedAnswers] = React.useState<number[]>([]);
+	const [dataUser, setDataUser] = React.useState<{ name?: string, id?: number }>({})
 	const [correctAnswersCount, setCorrectAnswersCount] = React.useState<number>(0);
 	const [selectedAnswer, setSelectedAnswer] = React.useState<number | null>(null);
-  const [isQuizFinished, setIsQuizFinished] = React.useState<boolean>(false);
-	const [currentQuestionIndex, setCurrentQuestionIndex] =
-		React.useState<number>(0);
+	const [showQuestion, setShowQuestion] = React.useState<boolean>(false);
+	const [showResult, setShowResult] = React.useState<boolean>(false);
+	const [currentQuestionIndex, setCurrentQuestionIndex] = React.useState<number>(0);
 	const [data, setData] = React.useState<{
 		category?: { title: string };
 		questions?: {
@@ -31,8 +32,39 @@ export default function CategoryQuiz() {
 		}[];
 	}>({});
 
+	const getToken = () => {
+		return localStorage.getItem("token");
+	};
 
-	const getCorrectOptionById = (id: number,qid: number) => {
+	React.useEffect(() => {
+		const user = localStorage.getItem("user");
+		const tokenn = getToken();
+		setDataUser(user ? JSON.parse(user) : {});
+		setToken(tokenn);
+
+		axios
+			.get(`/api/quiz?id=${id}`, {
+				method: "GET", // Secara default GET, dapat dihapus
+				headers: {
+					"Content-Type": "application/json", // Pastikan format sesuai dengan API Anda
+					Authorization: `Bearer ${tokenn}`, // Sertakan token di header Authorization
+				},
+			})
+			.then((response) => {
+				setData(response.data); // Update state with fetched data
+				setIsLoading(false);
+				setShowQuestion(true);
+			})
+			.catch((err) => {
+				console.log(err);
+				localStorage.removeItem('user')
+				localStorage.removeItem('token')
+				router.push('/login')
+			});
+	}, [id, router, token]);
+
+
+	const getCorrectOptionById = (id: number, qid: number) => {
 		const question = data.questions?.find((question) => question.id === qid);
 		if (question) {
 			const option = question.options?.find((option) => option.id === id);
@@ -42,11 +74,13 @@ export default function CategoryQuiz() {
 	};
 
 	function handleSelectedAnswer(id: number, qid: number) {
-		console.log(id, getCorrectOptionById(id, qid), "lololol");
+		// console.log(id, getCorrectOptionById(id, qid), "cek jawaban benar ");
 
 		const newSelectedAnswers = [...selectedAnswers];
 		const previousAnswer = newSelectedAnswers[currentQuestionIndex];
-		const isPreviouslyCorrect = previousAnswer ? getCorrectOptionById(previousAnswer, qid) : false;
+		const isPreviouslyCorrect = previousAnswer
+			? getCorrectOptionById(previousAnswer, qid)
+			: false;
 		const isNewCorrect = getCorrectOptionById(id, qid);
 
 		// Update the selected answer
@@ -80,41 +114,39 @@ export default function CategoryQuiz() {
 
 	const calculateScore = () => {
 		const totalQuestions = data.questions?.length ?? 0;
-		
+
 		return ((correctAnswersCount / totalQuestions) * 100).toFixed(2); // Score in percentage
 	};
 
 	function result() {
-		console.log(calculateScore(), id)
-		setIsQuizFinished(true);
+		setShowQuestion(false);
+		setShowResult(true);
+		const dataResult = {
+			userId: dataUser.id,
+			quizId: parseInt(id || "0"),
+			score: parseFloat(calculateScore())
+		}
+		
+		axios.post(`/api/quiz/result`, dataResult, {
+			headers: {
+				"Content-Type": "application/json", // Pastikan format sesuai dengan API Anda
+				Authorization: `Bearer ${token}`, // Sertakan token di header Authorization
+			},
+		}).then((res) => {
+			console.log(res)
+		}).catch((error) => {
+			console.log(error)
+		})
+
+		console.log(dataResult,' resulttt')
 		// console.log(`Your score is: ${score} out of ${data.questions?.length}`);
 	}
-
-	const name = "KUCING";
 	
-	React.useEffect(() => {
-		const fetchData = async () => {
-			try {
-				const response = await axios.get(`/api/quiz?id=${id}`); // Replace with your API URL
-				setData(response.data); // Update state with fetched data
-				setIsLoading(false)
-			} catch (err: unknown) {
-				if (err instanceof Error) {
-					console.log(err.message);
-				} else {
-					console.log("Failed to fetch data");
-				}
-			}
-		};
-
-		fetchData();
-	}, [id]);
-
-  return (
+	return (
 		<div className="w-full flex flex-col gap-3 mb-24">
 			<div className="flex flex-col pb-6 justify-end w-full h-96 bg-blue-500 rounded-[40px] mt-[-260px]">
 				<div className="mx-10">
-					<h1 className="font-bold text-4xl text-white">Hi, {name}!</h1>
+					<h1 className="font-bold text-4xl text-white">Hi, {dataUser?.name}!</h1>
 					<p className="text-md text-white">Good Morning</p>
 				</div>
 			</div>
@@ -128,20 +160,31 @@ export default function CategoryQuiz() {
 			{isLoading ? (
 				<>
 					<p className="text-center">Loading...</p>
+					{/* <button
+						onClick={() => router.push("/")}
+						className="bg-blue-400 rounded-xl px-8 hover:bg-blue-600 disabled:bg-blue-50 mx-20">
+						<p className="text-white text-center font-bold text-md py-2">
+							Kembali Ke Login
+						</p>
+					</button> */}
 				</>
 			) : (
 				<>
-					{!isQuizFinished ? (
+					{showQuestion && (
 						<>
 							<h1 className="font-bold text-center text-2xl underline">
-								<p>{data.category?.title}</p>
+								{data.category?.title}
 							</h1>
+							<p className="font-bold text-center text-xl underline">
+								{"Pertanyaan " + (currentQuestionIndex + 1) + ' dari ' + data.questions?.length} 
+							</p>
 							<div className="flex justify-center">
 								<Image
 									src="/images/question.svg"
 									alt="Quiz"
 									width={400}
 									height={400}
+									priority={true}
 									className="mt-[-40px] mx-4 mr-[-40px] bg-fixed w-full h-5/6"
 								/>
 							</div>
@@ -206,7 +249,8 @@ export default function CategoryQuiz() {
 								</div>
 							)}
 						</>
-					) : (
+					)}
+					{showResult && (
 						<>
 							<h1 className="font-bold text-center text-4xl underline my-4">
 								{"HASIL QUIZ " + data.category?.title.toUpperCase()}

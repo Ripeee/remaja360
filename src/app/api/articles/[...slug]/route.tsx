@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
+import { jwtVerify } from "jose";
 
 const prisma = new PrismaClient();
 
@@ -7,11 +8,23 @@ const handleError = (message: string) => {
 	return NextResponse.json({ error: message }, { status: 500 });
 };
 
-export async function GET(
-	req: NextRequest,
-	{ params }: { params: Promise<{ slug: string }> },
-) {
+export async function GET(req: NextRequest,{ params }: { params: Promise<{ slug: string }> }) {
 	try {
+		// Extract the token from the Authorization header
+		const token = req.headers.get("Authorization")?.split(" ")[1];
+		if (!token) {
+			return NextResponse.json(
+				{ error: "Authorization token is required" },
+				{ status: 401 },
+			);
+		}
+
+		// Verify the JWT token
+		const secret = new TextEncoder().encode(process.env.JWT_SECRET || "default_secret");
+		await jwtVerify(token, secret); // Verify the token
+		// End Token
+
+		// Start the Query
 		const { slug } = await params; // Get the slug from the dynamic route parameter
 		const { searchParams } = new URL(req.url);
 

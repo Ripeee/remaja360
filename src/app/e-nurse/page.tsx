@@ -5,14 +5,19 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function Nurse() {
-	const name = 'KUCING'
+	const [dataUser, setDataUser] = React.useState<{ name?: string }>({})
 
+	React.useEffect(() => {
+		const user = localStorage.getItem("user");
+		setDataUser(user ? JSON.parse(user) : {});
+			
+	}, [])
 	return (
 		<div className="w-full flex flex-col gap-3 h-screen justify-between">
 			<div className="">
 				<div className="flex flex-col pb-10 justify-end w-full h-96 bg-blue-500 rounded-[40px] mt-[-240px]">
 					<div className="mx-10">
-						<h1 className="font-bold text-4xl text-white">Hi, {name}!</h1>
+						<h1 className="font-bold text-4xl text-white">Hi, {dataUser.name}!</h1>
 						<p className="text-md text-white">Good Morning</p>
 					</div>
 				</div>

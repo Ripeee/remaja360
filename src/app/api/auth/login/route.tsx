@@ -1,9 +1,62 @@
-import { SignJWT } from "jose";
+import { SignJWT, decodeJwt } from "jose";
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client"; // Import Prisma client
 
 // Initialize Prisma client
 const prisma = new PrismaClient();
+
+function getTokenExpiration(token: string) {
+	const jwtRegex = /^[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+$/;
+
+	if (!jwtRegex.test(token)) {
+		console.error("Invalid token format");
+		return null;
+	}
+
+	
+	try {
+		const decoded = decodeJwt(token); // Decode the JWT payload
+		return decoded.exp; // Expiration time in seconds (Unix timestamp)
+	} catch (error) {
+		console.error("Failed to decode token:", error);
+		return null;
+	}
+}
+
+// function isTokenExpired(token) {
+// 	const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
+// 	const expirationTime = getTokenExpiration(token);
+
+// 	if (expirationTime) {
+// 		return currentTime >= expirationTime; // Check if token is expired
+// 	}
+
+// 	return true; // If unable to decode, consider the token invalid
+// }
+
+function getRemainingTime(token: string) {
+	const jwtRegex = /^[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+$/;
+
+	if (!jwtRegex.test(token)) {
+		console.error("Invalid token format");
+		return null;
+	}
+
+	const expirationTime = getTokenExpiration(token);
+	if (!expirationTime) return 0;
+
+	const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
+	return (expirationTime - currentTime) * 2; // Remaining time in seconds
+}
+
+// const token = "your-jwt-token-here";
+// const remainingTime = getRemainingTime(token);
+
+// if (remainingTime > 0) {
+// 	console.log(`Token expires in ${remainingTime} seconds`);
+// } else {
+// 	console.log("Token has expired");
+// }
 
 export async function POST(req: NextRequest) {
 	try {
@@ -44,6 +97,7 @@ export async function POST(req: NextRequest) {
 		return NextResponse.json(
 			{
 				token,
+				remainingToken: getRemainingTime(token),
 				user: {
 					id: user.id,
 					email: user.email,

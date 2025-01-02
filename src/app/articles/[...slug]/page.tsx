@@ -19,17 +19,35 @@ export default function ArtikelDetail() {
 	const [totalPages, setTotalPages] = React.useState<number>(0);
 	const [currentPage, setCurrentPage] = React.useState<number>(1);
 	const [loading, setLoading] = React.useState<boolean>(false);
+	const [dataUser, setDataUser] = React.useState<{ name?: string }>({})
+	const [token, setToken] = React.useState<string | null>(null);
 
 	const limit = 150; // Jumlah kata per halaman
 
 	const slug = searchParams.get("slug");
+	const getToken = () => {
+		return localStorage.getItem("token");
+	};
 
 	React.useEffect(() => {
 		const fetchArticleContent = async () => {
 			setLoading(true);
+			const tokenn = getToken()
+			
 			try {
+				setToken(tokenn);
+				const user = localStorage.getItem("user");
+				setDataUser(user ? JSON.parse(user) : {});
+
 				const response = await fetch(
 					`/api/articles/${slug}?page=${currentPage}&limit=${limit}`,
+					{
+						method: "GET", // Secara default GET, dapat dihapus
+						headers: {
+							"Content-Type": "application/json", // Pastikan format sesuai dengan API Anda
+							Authorization: `Bearer ${tokenn}`, // Sertakan token di header Authorization
+						},
+					},
 				);
 				const data = await response.json();
 
@@ -47,7 +65,7 @@ export default function ArtikelDetail() {
 		};
 
 		fetchArticleContent();
-  }, [slug, currentPage]);
+  }, [slug, currentPage, token]);
 
 
 	const handlePageChange = (newPage: number) => {
@@ -59,13 +77,12 @@ export default function ArtikelDetail() {
 	if (loading) {
 		return <div>Loading...</div>;
 	}
-  const name = "Kucing";
 
   return (
 		<div className="w-full flex flex-col gap-3">
 			<div className="flex flex-col pb-6 justify-end w-full h-80 bg-blue-500 rounded-[40px] mt-[-140px]">
 				<div className="mx-10">
-					<h1 className="font-bold text-3xl text-white">Hi, {name}!</h1>
+					<h1 className="font-bold text-3xl text-white">Hi, {dataUser.name}!</h1>
 					<p className="text-md text-white">Good Morning</p>
 				</div>
 			</div>

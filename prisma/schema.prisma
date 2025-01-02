@@ -84,6 +84,6 @@ model Result {
   userId      Int
   quiz        Quiz      @relation(fields: [quizId], references: [id])
   quizId      Int
-  score       Int
+  score       Float
   takenAt     DateTime  @default(now())
 }

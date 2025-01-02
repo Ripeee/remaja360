@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
+import { jwtVerify } from "jose";
 
 const prisma = new PrismaClient();
 
@@ -12,6 +13,24 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
 	}
 
 	try {
+
+		// Extract the token from the Authorization header
+				const token = request.headers.get("Authorization")?.split(" ")[1];
+		
+				if (!token) {
+					return NextResponse.json(
+						{ error: "Authorization token is required" },
+						{ status: 401 },
+					);
+				}
+		
+				// Verify the JWT token
+				const secret = new TextEncoder().encode(
+					process.env.JWT_SECRET || "default_secret",
+				);
+				await jwtVerify(token, secret); // Verify the token
+		// End Token
+		
 		const detailUser = await prisma.user.findUnique({
 			where: { id: Number(id) },
 		});
@@ -91,6 +110,23 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
 	const { id } = await params; // Get id from the dynamic route parameter
 
 	try {
+		// Extract the token from the Authorization header
+		const token = req.headers.get("Authorization")?.split(" ")[1];
+
+		if (!token) {
+			return NextResponse.json(
+				{ error: "Authorization token is required" },
+				{ status: 401 },
+			);
+		}
+
+		// Verify the JWT token
+		const secret = new TextEncoder().encode(
+			process.env.JWT_SECRET || "default_secret",
+		);
+		await jwtVerify(token, secret); // Verify the token
+		// End Token
+		
 		// Get the data to update from the request body
 		const body = await req.json();
 

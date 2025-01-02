@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { Istok_Web, Inter } from "next/font/google";
 import "./globals.css";
@@ -21,23 +21,36 @@ const inter = Inter({
 });
 
 export default function RootLayout({
-  children,
+	children,
 }: Readonly<{
-  children: React.ReactNode;
+	children: React.ReactNode;
 }>) {
 	const router = useRouter();
-	
+
 	const [showSplash, setShowSplash] = React.useState(true);
-	const pathname = usePathname(); // Ambil path saat 
-	
+	const pathname = usePathname(); // Ambil path saat
 
 	React.useEffect(() => {
 		const token = localStorage.getItem("token");
 
+
 		if (token) {
-			// Redirect to /dashboard if token is found
-			router.push("/dashboard");
+			// Jika token ada, arahkan ke dashboard
+			if (token) {
+				if (pathname === "/login" || pathname === "/signup") {
+					router.push("/dashboard"); // Jika login/signup, redirect ke dashboard
+				}
+			}
 		} else {
+			if (pathname !== "/" && pathname !== "/login" && pathname !== "/signup") {
+				// Hapus token dan data user jika ada
+				localStorage.removeItem("token");
+				localStorage.removeItem("user");
+
+				// Redirect ke login
+				router.push("/login");
+			}
+
 			if (pathname === "/") {
 				// Show splash screen only on the home page
 				const timer = setTimeout(() => {
@@ -57,9 +70,7 @@ export default function RootLayout({
 				className={`${istokWeb.variable} ${inter.variable} antialiased md:bg-blue-300`}>
 				<div className="flex justify-center mx-auto bg-white min-h-screen max-w-screen-sm">
 					{pathname === "/" && showSplash ? <SplashScreen /> : children}
-					{!(pathname === "/" ) &&
-						pathname !== "/login" &&
-						pathname !== "/signup" && <Navbar />}{" "}
+					{!(pathname === "/" || pathname === "/login" || pathname === "/signup") && (<Navbar />)}
 				</div>
 			</body>
 		</html>

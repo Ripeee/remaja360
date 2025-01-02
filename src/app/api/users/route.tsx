@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
+import { jwtVerify } from "jose";
 
 // Define the interface for the input data
 interface CreateUserInput {
@@ -25,14 +26,31 @@ const handleError = (message: string) => {
 };
 
 // Fungsi GET: Mengambil semua pengguna
-export async function GET() {
-  try {
+export async function GET(req: NextRequest) {
+	try {
+		// Extract the token from the Authorization header
+		const token = req.headers.get("Authorization")?.split(" ")[1];
+
+		if (!token) {
+			return NextResponse.json(
+				{ error: "Authorization token is required" },
+				{ status: 401 },
+			);
+		}
+
+		// Verify the JWT token
+		const secret = new TextEncoder().encode(
+			process.env.JWT_SECRET || "default_secret",
+		);
+		await jwtVerify(token, secret); // Verify the token
+		// End Token
+
 		const users = await prisma.user.findMany({
 			orderBy: {
 				id: "asc", // Sort by `id` in ascending order
 			},
 		});
-    return NextResponse.json(users, { status: 200 });
+		return NextResponse.json(users, { status: 200 });
 	} catch (error) {
     return handleError(error + "Gagal mengambil data pengguna");
   }
@@ -125,14 +143,34 @@ const createUser = async (data: CreateUserInput) => {
 
 // Fungsi DELETE: Menghapus pengguna
 export async function DELETE(req: Request) {
-  try {
-    const body = await req.json();
-    const { id } = body;
+	try {
+		// Extract the token from the Authorization header
+		const token = req.headers.get("Authorization")?.split(" ")[1];
 
-    await deleteUser(id);
+		if (!token) {
+			return NextResponse.json(
+				{ error: "Authorization token is required" },
+				{ status: 401 },
+			);
+		}
 
-    return NextResponse.json({ message: "Pengguna berhasil dihapus" }, { status: 200 });
-  } catch (error) {
+		// Verify the JWT token
+		const secret = new TextEncoder().encode(
+			process.env.JWT_SECRET || "default_secret",
+		);
+		await jwtVerify(token, secret); // Verify the token
+		// End Token
+		
+		const body = await req.json();
+		const { id } = body;
+
+		await deleteUser(id);
+
+		return NextResponse.json(
+			{ message: "Pengguna berhasil dihapus" },
+			{ status: 200 },
+		);
+	} catch (error) {
     return handleError(error + "Gagal menghapus pengguna");
   }
 }

@@ -1,37 +1,24 @@
-// middleware.ts
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
-import { NextRequest, NextResponse } from "next/server";
-import { jwtVerify } from "jose";
+export function middleware(req: NextRequest) {
+	const token = req.cookies.get("token")?.value; // Ambil token dari cookie
 
-// Replace with your secret key
-const secretKey = new TextEncoder().encode(
-	process.env.JWT_SECRET || "your-secret-key",
-);
-
-export async function middleware(req: NextRequest) {
-	const token = req.cookies.get("authToken")?.value;
-
-	// Allow access to public routes (e.g., login)
-	if (req.nextUrl.pathname.startsWith("/api/auth/login")) {
-		return NextResponse.next();
+	// Jika tidak ada token dan mencoba akses halaman selain login atau signup
+	if (!token && !["/login", "/signup"].includes(req.nextUrl.pathname)) {
+		return NextResponse.redirect(new URL("/login", req.url));
 	}
 
-	// Validate the token
-	if (token) {
-		try {
-			await jwtVerify(token, secretKey);
-			return NextResponse.next(); // Token is valid
-    } catch (error) {
-      console.log(error, 'err')
-			return NextResponse.redirect(new URL("/login", req.url)); // Redirect to login if invalid
-		}
+	// Jika ada token dan mencoba akses login atau signup, arahkan ke dashboard
+	if (token && ["/login", "/signup"].includes(req.nextUrl.pathname)) {
+		return NextResponse.redirect(new URL("/dashboard", req.url));
 	}
 
-	// No token, redirect to login
-	return NextResponse.redirect(new URL("/login", req.url));
+	// Lanjutkan ke halaman jika valid
+	return NextResponse.next();
 }
 
-// Apply middleware to protected routes only
+// Tentukan rute yang akan menggunakan middleware
 export const config = {
-	matcher: ["/protected-route/:path*", "/another-protected-route/:path*"], // Adjust paths as needed
+	matcher: ["/dashboard/:path*", "/login", "/signup"], // Gunakan pada rute ini
 };

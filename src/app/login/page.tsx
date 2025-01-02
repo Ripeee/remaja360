@@ -15,12 +15,11 @@ export default function Login() {
 		setEmail(value)
 	}
 	function handlePassword(value: string | number) {
-		console.log(value)
+		// console.log(value)
 		setPassword(String(value))
 	}
 
-	async function login() {
-		console.log(email, password)
+	const login = async () => {
 		try {
 			const response = await axios.post("/api/auth/login", {
 				email,
@@ -40,8 +39,8 @@ export default function Login() {
 				alert("Invalid credentials");
 			}
 		} catch (err) {
-			alert("Something went wrong");
-			console.error(err);
+			alert("Password atau Email Salah");
+			console.log(err);
 		}
 	}
 
@@ -50,7 +49,7 @@ export default function Login() {
 			<div className="w-full h-80 bg-blue-500 rounded-full mt-[-240px] mb-12"></div>
 			<h1 className="font-bold text-4xl text-center">Login</h1>
 
-			<form onSubmit={login} className="mx-8 my-8 flex flex-col gap-10">
+			<div className="mx-8 my-8 flex flex-col gap-10">
 				<div className="items-start">
 					<p className="font-bold text-xl">Email</p>
 					<input
@@ -70,11 +69,11 @@ export default function Login() {
 					/>
 				</div>
 
-				<div className="flex justify-end underline">
+				{/* <div className="flex justify-end underline">
 					<Link href="" className="text-sm">
 						Forgot Password?
 					</Link>
-				</div>
+				</div> */}
 
 				<button onClick={login} className="px-4 py-2 bg-blue-500 text-white text-xl font-bold rounded-full w-1/2 mx-auto">
 					LOG IN
@@ -90,7 +89,7 @@ export default function Login() {
 						</Link>
 					</div>
 				</div>
-			</form>
+			</div>
 		</div>
 	);
 }

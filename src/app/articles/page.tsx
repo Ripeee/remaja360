@@ -6,7 +6,16 @@ import Link from "next/link";
 
 export default function Artikel() {
 
-	const name = 'Kucing'
+	// const user = localStorage.getItem("user");
+
+	// const name = JSON.parse(user || "{}").name || null;
+	
+	const [dataUser, setDataUser] = React.useState<{ name?: string }>({})
+
+	React.useEffect(() => {
+		const user = localStorage.getItem('user');
+		setDataUser(user ? JSON.parse(user) : {});
+	}, [])
 
 	const data = [
 		{
@@ -61,7 +70,7 @@ export default function Artikel() {
 		<div className="w-full flex flex-col gap-3 min-h-screen justify-between">
 				<div className="flex flex-col pb-10 justify-end w-full h-96 bg-blue-500 rounded-[40px] mt-[-240px]">
 					<div className="mx-10">
-						<h1 className="font-bold text-4xl text-white">Hi, {name}!</h1>
+						<h1 className="font-bold text-4xl text-white">Hi, {dataUser.name}!</h1>
 						<p className="text-md text-white">Good Morning</p>
 					</div>
 				</div>
@@ -87,10 +96,11 @@ export default function Artikel() {
 								</div>
 								<Image
 									src={item.image}
-									alt="Donor Darah"
+									alt={item.title}
 									width={200}
 									height={200}
 									quality={100}
+									priority={true}
 									className="w-1/3 object-contain"
 								/>
 							</Link>
@@ -110,7 +120,7 @@ export default function Artikel() {
 									</div>
 									<Image
 										src={content.image}
-										alt="Donor Darah"
+										alt={item.title}
 										width={200}
 										height={200}
 										quality={100}
