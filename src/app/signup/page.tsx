@@ -65,7 +65,7 @@ export default function Signup() {
 
 			// Masuk API Regist disini
 			axios
-				.post("http://192.168.1.8:3000/api/users", data)
+				.post("/api/users", data)
 				.then((response) => {
 					console.log("Response:", response.data);
 					setShow(true)
@@ -88,7 +88,7 @@ export default function Signup() {
 			<div className="w-full h-80 bg-blue-500 rounded-full mt-[-240px] mb-12"></div>
 			<h1 className="font-bold text-4xl text-center">Sign Up</h1>
 
-			<form className="mx-8 my-8 flex flex-col gap-10">
+			<div className="mx-8 my-8 flex flex-col gap-10">
 				<div className="items-start">
 					<p className="font-bold text-xl">Nama Lengkap</p>
 					<input
@@ -229,7 +229,7 @@ export default function Signup() {
 						</Link>
 					</div>
 				</div>
-			</form>
+			</div>
 		</div>
 	);
 }
