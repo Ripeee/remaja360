@@ -94,6 +94,7 @@ export default function Dashboard() {
 	const handleDownload = async () => {
 		
 		const formattedData = dataScore.map(
+			// eslint-disable-next-line @typescript-eslint/no-unused-vars
 			({ id, userId, quizId, score, takenAt, userName, quizTitle, ...rest }) => ({
 				...rest,
 				nama_lengkap: userName,
