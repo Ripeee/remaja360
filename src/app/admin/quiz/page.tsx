@@ -1,25 +1,23 @@
 "use client";
 
 import * as React from "react";
-// import Link from "next/link";
-// Import Swiper React components
+import { utils, writeFile } from "xlsx";
+import {useRouter} from "next/navigation";
 import axios from "axios";
 import dayjs from "dayjs";
 
+type ScoreData = {
+  id: number;
+  userId: string;
+  userName: string;
+  quizTitle: string;
+  quizId: string;
+  score: number;
+  takenAt: string;
+};
+
 export default function Dashboard() {
-	// const images = [
-	// 	"https://images.unsplash.com/photo-1731331344306-ad4f902691a3?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw5fHx8ZW58MHx8fHx8",
-	// 	"https://images.unsplash.com/photo-1731429945593-61610daebc11?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxMnx8fGVufDB8fHx8fA%3D%3D",
-	// ];
-	type ScoreData = {
-		id: number;
-		userId: string;
-		userName: string;
-		quizTitle: string;
-		quizId: string;
-		score: number;
-		takenAt: string;
-	};
+	const router = useRouter()
 
 	const [dataScore, setDataScore] = React.useState<ScoreData[]>([]);
 	const [name, setName] = React.useState("");
@@ -30,54 +28,91 @@ export default function Dashboard() {
   };
   
 	React.useEffect(() => {
-		// This runs only on the client side
-		const user = localStorage.getItem("user");
-    const userData = JSON.parse(user || "{}");
-    const tokenn = getToken();
+		const fetchData = async () => {
+			try {
+				const user = localStorage.getItem("user");
+				const userData = JSON.parse(user || "{}");
+				const tokenn = getToken();
 
-		if (userData.id == 0) {
-			setIsAdmin(true);
-		} else {
-			setIsAdmin(false);
-		}
+				// Check user role
+				setIsAdmin(userData.id === 0);
 
-    setName(userData.name || "User");
-    
-    axios
-			.get("/api/quiz/result", {
-				headers: {
-					"Content-Type": "application/json", // Pastikan format sesuai dengan API Anda
-					Authorization: `Bearer ${tokenn}`, // Sertakan token di header Authorization
-				},
-			})
-      .then((res) => {
-      const results = res.data.result;
+				setName(userData.name || "User");
 
-      // Ambil nama dari userId untuk setiap data skor
-      Promise.all(
-				results.map(async (result: ScoreData) => {
-					const userResponse = await axios.get(`/api/users/${result.userId}`, {
-						headers: { Authorization: `Bearer ${tokenn}` },
-					});
-					const quizResponse = await axios.get(
-						`/api/quiz?id=${result.quizId}`,
-						{
-							headers: { Authorization: `Bearer ${tokenn}` },
-						},
-					);
+				// Fetch quiz results
+				const res = await axios.get("/api/quiz/result", {
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${tokenn}`,
+					},
+				});
 
-					return {
-						...result,
-						userName: userResponse.data.name,
-						quizTitle: quizResponse.data.category.title,
-					};
-				}),
-      ).then((updatedResults) => {
-        console.log(updatedResults)
+				const results = res.data.result;
+
+				// Fetch user names and quiz titles for each result
+				const updatedResults = await Promise.all(
+					results.map(async (result: ScoreData) => {
+						const userResponse = await axios.get(
+							`/api/users/${result.userId}`,
+							{
+								headers: { Authorization: `Bearer ${tokenn}` },
+							},
+						);
+
+						const quizResponse = await axios.get(
+							`/api/quiz?id=${result.quizId}`,
+							{
+								headers: { Authorization: `Bearer ${tokenn}` },
+							},
+						);
+
+						return {
+							...result,
+							userName: userResponse.data.name,
+							quizTitle: quizResponse.data.category.title,
+						};
+					}),
+				);
+
 				setDataScore(updatedResults);
-			});
-			});
-	}, []);
+			} catch (error: unknown) {
+				console.error("Error fetching data:", error);
+
+				if (axios.isAxiosError(error) && error.response && error.response.status === 401) {
+					// Handle 401 Unauthorized error
+					alert("Session expired. Please log in again.");
+					localStorage.removeItem("user");
+					localStorage.removeItem("token");
+					router.push("/");
+				}
+			}
+		};
+
+		fetchData();
+	}, [router]);
+  
+	const handleDownload = async () => {
+		
+		const formattedData = dataScore.map(
+			({ id, userId, quizId, score, takenAt, userName, quizTitle, ...rest }) => ({
+				...rest,
+				nama_lengkap: userName,
+				judul_quiz: quizTitle,
+				nilai: score,
+				tanggal: dayjs(takenAt).format('DD-MM-YYYY'),
+				waktu: dayjs(takenAt).format('HH:mm:ss')
+			}),
+		);
+
+		// Sort data by ID
+		// const sortedData = formattedData.sort((a, b) => a.id - b.id);
+
+		// Convert sorted data to Excel
+		const worksheet = utils.json_to_sheet(formattedData);
+		const workbook = utils.book_new();
+		utils.book_append_sheet(workbook, worksheet, "Sheet1");
+		writeFile(workbook, "data.xlsx");
+    };
 
 	return (
 		<div className="w-full flex flex-col justify-between gap-4">
@@ -95,6 +130,13 @@ export default function Dashboard() {
 					<div className="flex flex-col items-center gap-4 my-4">
 						<h1 className="font-bold text-2xl">Hasil Nilai Quiz</h1>
 
+            <button
+              onClick={handleDownload}
+							className="bg-green-400 rounded-xl px-8 hover:bg-green-600 disabled:bg-blue-50">
+							<p className="text-white text-center font-bold text-md py-2">
+								Lihat Hasil Test Quiz
+							</p>
+						</button>
 						<table className="table-auto w-auto mx-10">
 							<thead>
 								<tr className="">
@@ -110,7 +152,9 @@ export default function Dashboard() {
 										<td className="w-1/4">{data.userName}</td>
 										<td className="w-1/4">{data.quizTitle}</td>
 										<td className="w-1/4">{data.score}</td>
-										<td className="w-1/4">{dayjs(data?.takenAt).format("DD/MM/YYYY")}</td>
+										<td className="w-1/4">
+											{dayjs(data?.takenAt).format("DD/MM/YYYY")}
+										</td>
 									</tr>
 								))}
 							</tbody>

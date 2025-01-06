@@ -57,13 +57,11 @@ export default function RootLayout({
 
 			if (pathname === "/") {
 				// Show splash screen only on the home page
-				console.log('lol')
 				const timer = setTimeout(() => {
 					setShowSplash(false);
 				}, 2000); // Splash screen for 2 seconds
 				return () => clearTimeout(timer);
 			} else {
-				console.log('ad')
 				// Hide splash screen if not on the home page
 				setShowSplash(false);
 			}
