@@ -156,7 +156,7 @@ function getTileContent({ date }: { date: Date }) {
 			<div className="flex flex-col pb-10 justify-end w-full h-96 bg-blue-500 rounded-[40px] mt-[-240px]">
 				<div className="mx-10">
 					<h1 className="font-bold text-4xl text-white">
-						Hi, {dataUser.name}!
+						Hi, {dataUser.name?.split(" ")[0]}!
 					</h1>
 					<p className="text-md text-white">Good Morning</p>
 				</div>
@@ -198,7 +198,9 @@ function getTileContent({ date }: { date: Date }) {
 					/>
 				</div>
 				<div className="">
-					<p className="font-bold">Biasanya berapa hari Menstruasi Berlangsung?</p>
+					<p className="font-bold">
+						Biasanya berapa hari Menstruasi Berlangsung?
+					</p>
 					<div className="p-2 rounded-md border">
 						<select
 							onChange={(e) => {
@@ -218,7 +220,9 @@ function getTileContent({ date }: { date: Date }) {
 				</div>
 
 				<div className="">
-					<p className="font-bold">Berapa Rata-Rata Siklus Bulanan Menstruasimu (Hari)</p>
+					<p className="font-bold">
+						Berapa Rata-Rata Siklus Bulanan Menstruasimu (Hari)
+					</p>
 					<div className="p-2 rounded-md border">
 						<select
 							onChange={(e) => {

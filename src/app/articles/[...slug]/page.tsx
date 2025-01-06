@@ -82,7 +82,9 @@ export default function ArtikelDetail() {
 		<div className="w-full flex flex-col gap-3">
 			<div className="flex flex-col pb-6 justify-end w-full h-80 bg-blue-500 rounded-[40px] mt-[-140px]">
 				<div className="mx-10">
-					<h1 className="font-bold text-3xl text-white">Hi, {dataUser.name}!</h1>
+					<h1 className="font-bold text-3xl text-white">
+						Hi, {dataUser.name?.split(" ")[0]}!
+					</h1>
 					<p className="text-md text-white">Good Morning</p>
 				</div>
 			</div>

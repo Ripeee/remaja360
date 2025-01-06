@@ -66,8 +66,8 @@ export default function Signup() {
 			// Masuk API Regist disini
 			axios
 				.post("/api/users", data)
-				.then((response) => {
-					console.log("Response:", response.data);
+				.then(() => {
+					// console.log("Response:", response.data);
 					setShow(true)
 					// Redirect ke halaman login
 					router.push("/login");

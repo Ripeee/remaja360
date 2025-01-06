@@ -33,7 +33,6 @@ export default function Signup() {
 
 	
 	function Logout() {
-		console.log('logout')
 		localStorage.removeItem("token");
 		
 		// Optionally, you can store the user data as well
@@ -91,7 +90,7 @@ export default function Signup() {
 		<div className="w-full flex flex-col gap-3">
 			<div className="flex flex-col pb-10 justify-end w-full h-96 bg-blue-500 rounded-[40px] mt-[-240px] mb-12">
 				<h1 className="font-bold text-3xl text-center text-white">
-					Hi, {name}!
+					Hi, {name.split(" ")[0]}!
 				</h1>
 			</div>
 

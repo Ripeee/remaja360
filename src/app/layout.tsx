@@ -36,13 +36,17 @@ export default function RootLayout({
 
 		if (token) {
 			// Jika token ada, arahkan ke dashboard
-			if (token) {
-				if (pathname === "/login" || pathname === "/signup") {
-					router.push("/dashboard"); // Jika login/signup, redirect ke dashboard
-				}
+			if (pathname === "/" || pathname === "/login" || pathname === "/signup") {
+				router.push("/dashboard"); // Jika login/signup, redirect ke dashboard
 			}
 		} else {
-			if (pathname !== "/" && pathname !== "/login" && pathname !== "/signup") {
+			if (
+				(pathname !== "/" &&
+					pathname !== "/login" &&
+					pathname !== "/signup" &&
+					pathname !== "/admin" &&
+					pathname !== "/admin/quiz")
+			) {
 				// Hapus token dan data user jika ada
 				localStorage.removeItem("token");
 				localStorage.removeItem("user");
@@ -53,11 +57,13 @@ export default function RootLayout({
 
 			if (pathname === "/") {
 				// Show splash screen only on the home page
+				console.log('lol')
 				const timer = setTimeout(() => {
 					setShowSplash(false);
 				}, 2000); // Splash screen for 2 seconds
 				return () => clearTimeout(timer);
 			} else {
+				console.log('ad')
 				// Hide splash screen if not on the home page
 				setShowSplash(false);
 			}
@@ -70,7 +76,7 @@ export default function RootLayout({
 				className={`${istokWeb.variable} ${inter.variable} antialiased md:bg-blue-300`}>
 				<div className="flex justify-center mx-auto bg-white min-h-screen max-w-screen-sm">
 					{pathname === "/" && showSplash ? <SplashScreen /> : children}
-					{!(pathname === "/" || pathname === "/login" || pathname === "/signup") && (<Navbar />)}
+					{!(pathname === "/" || pathname === "/login" || pathname === "/signup" || pathname === '/admin' || pathname === '/admin/quiz') && (<Navbar />)}
 				</div>
 			</body>
 		</html>

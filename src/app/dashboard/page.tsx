@@ -15,25 +15,25 @@ import { Autoplay, Navigation, Pagination } from "swiper/modules";
 export default function Dashboard() {
   
   const images = [
-		"https://images.unsplash.com/photo-1731331344306-ad4f902691a3?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw5fHx8ZW58MHx8fHx8",
-		"https://images.unsplash.com/photo-1731429945593-61610daebc11?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxMnx8fGVufDB8fHx8fA%3D%3D",
+		"/images/background.jpeg",
 	];
+  // const images = [
+	// 	"https://images.unsplash.com/photo-1731331344306-ad4f902691a3?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw5fHx8ZW58MHx8fHx8",
+	// 	"https://images.unsplash.com/photo-1731429945593-61610daebc11?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxMnx8fGVufDB8fHx8fA%3D%3D",
+	// ];
     
 	const article = [
 		{
 			id: 1,
 			image: "https://images.unsplash.com/photo-1636759805271-6299d2666773?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aGVhZGFjaGV8ZW58MHx8MHx8fDA%3D",
-			title: "Ngobrol seputar Anemia Salah satu Ayan",
+			title: "Rokok",
+			slug: "rokok",
 		},
 		{
 			id: 2,
 			image: "https://images.unsplash.com/photo-1634906344426-2ba0e7c91b09?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzV8fGhlYWRhY2hlfGVufDB8fDB8fHww",
-			title: "Salah satu Tipe Ayan",
-		},
-		{
-			id: 3,
-			image: "https://images.unsplash.com/photo-1634906344426-2ba0e7c91b09?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzV8fGhlYWRhY2hlfGVufDB8fDB8fHww",
-			title: " satu Tipe Ayan",
+			title: "Seks Bebas",
+			slug: "seks-bebas",
 		},
 	];
 
@@ -50,13 +50,15 @@ export default function Dashboard() {
 		<div className="w-full flex flex-col gap-4 mb-10">
 			<div className="flex flex-col pb-10 justify-end w-full h-96 bg-blue-500 rounded-[40px] mt-[-240px]">
 				<div className="mx-10">
-					<h1 className="font-bold text-4xl text-white">Hi, {name}!</h1>
+					<h1 className="font-bold text-4xl text-white">
+						Hi, {name.split(" ")[0]}!
+					</h1>
 					<p className="text-md text-white">Good Morning</p>
 				</div>
 			</div>
 
 			{/* Swiper Section */}
-			<div className="swiper-container mx-10 h-60 rounded-xl mt-[-50px]">
+			<div className="swiper-container mx-10 h-80 rounded-xl mt-[-50px]">
 				<Swiper
 					modules={[Navigation, Pagination, Autoplay]}
 					spaceBetween={30}
@@ -76,7 +78,7 @@ export default function Dashboard() {
 								width={800}
 								height={600}
 								priority={true}
-								className="w-full h-auto object-cover rounded-2xl"
+								className="w-full h-auto object-contain rounded-2xl"
 							/>
 						</SwiperSlide>
 					))}
@@ -105,11 +107,14 @@ export default function Dashboard() {
 				<h1 className="font-bold text-2xl">Artikel Terpopuler</h1>
 				<div className="grid grid-cols-2 gap-6">
 					{article.map((article) => (
-						<Link href={`/article/${article.id}`} key={article.id} className="rounded-xl bg-black flex flex-col h-60">
-							<ArticleCard
-								imageUrl={article.image}
-								title={article.title}
-							/>
+						<Link
+							href={{ 
+								pathname: `/articles/${article.slug}`,
+								query: { slug: article.slug}
+							}}
+							key={article.id}
+							className="rounded-xl bg-black flex flex-col h-60">
+							<ArticleCard imageUrl={article.image} title={article.title} />
 						</Link>
 					))}
 				</div>
