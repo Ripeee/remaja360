@@ -3,6 +3,7 @@
 import * as React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import Times from "../components/Times";
 // Import Swiper React components
 import "swiper/css";
 import "swiper/css/pagination";
@@ -27,24 +28,34 @@ export default function Dashboard() {
 		const user = localStorage.getItem("user");
     const userData = JSON.parse(user || "{}");
     
-    if (userData.id == 0) {
+    if (userData.id == 1) {
       setIsAdmin(true)
     } else {
       setIsAdmin(false)
     }
     
-    console.log(user, 'ser')
+    // console.log(user, 'ser')
 		setName(userData.name || "User");
 	}, []);
 
 	return (
 		<div className="w-full flex flex-col justify-between gap-4">
-			<div className="flex flex-col pb-10 justify-end w-full h-1/3 bg-blue-500 rounded-[40px] mt-[-60px]">
-				<div className="mx-10">
-					<h1 className="font-bold text-4xl text-white">
-						Hi, {name.split(" ")[0]}!
-					</h1>
-					<p className="text-md text-white">Good Morning</p>
+			<div className="flex flex-col pb-10 justify-end w-full h-96 bg-blue-500 rounded-[40px] mt-[-240px]">
+				<div className="mx-10 flex-row flex justify-between items-center">
+					<div className="">
+						<h1 className="font-bold text-4xl text-white">
+							Hi, {name.split(" ")[0]}!
+						</h1>
+						<p className="text-md text-white">Good <Times /></p>
+					</div>
+					<Image
+						src="https://stikes.wdh.ac.id/wp-content/uploads/2023/12/cropped-cropped-cropped-LOGO_STIKes-PNG-e1702550833657.png"
+						alt="Donor Darah"
+						width={120}
+						height={120}
+						quality={100}
+						className="w-20 h-20 object-contain"
+					/>
 				</div>
 			</div>
 
@@ -78,15 +89,23 @@ export default function Dashboard() {
 						</Swiper>
 
 						<div className="flex flex-col items-center gap-4 my-4">
-							<h1 className="font-bold text-2xl">Test Admin</h1>
-
-							<Link
-								href="/admin/quiz"
-								className="bg-green-400 rounded-xl px-8 hover:bg-green-600 disabled:bg-blue-50">
-								<p className="text-white text-center font-bold text-md py-2">
-									Lihat Hasil Test Quiz
-								</p>
-							</Link>
+							<div className="flex flex-col gap-6 mx-10 mt-8 mb-24 rounded-xl">
+									<Link
+										href="/admin/quiz"
+										className="flex justify-between px-10 rounded-xl h-40 bg-sky-100 hover:text-white hover:bg-blue-500">
+										<div className="py-4 h-full flex items-center">
+												<p className="text-2xl font-bold">Lihat Hasil Test Quiz</p>
+										</div>
+										<Image
+											src="/images/quiz.svg"
+											alt="Tes Quiz"
+											width={200}
+											height={200}
+											quality={100}
+											className="w-1/3 object-contain my-6"
+										/>
+									</Link>
+							</div>
 						</div>
 					</div>
 				</div>

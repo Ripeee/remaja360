@@ -7,46 +7,53 @@ const prisma = new PrismaClient();
 export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
 	const { id } = await params; // Destructure the 'id' from params
 
-	// Validate if 'id' is a number
-	if (isNaN(Number(id))) {
-		return NextResponse.json({ message: "Invalid ID" }, { status: 400 });
-	}
+if (isNaN(Number(id))) {
+	return NextResponse.json({ message: "Invalid ID" }, { status: 400 });
+}
 
-	try {
+try {
+	// Extract the token from the Authorization header
+	const token = request.headers.get("Authorization")?.split(" ")[1];
 
-		// Extract the token from the Authorization header
-				const token = request.headers.get("Authorization")?.split(" ")[1];
-		
-				if (!token) {
-					return NextResponse.json(
-						{ error: "Authorization token is required" },
-						{ status: 401 },
-					);
-				}
-		
-				// Verify the JWT token
-				const secret = new TextEncoder().encode(
-					process.env.JWT_SECRET || "default_secret",
-				);
-				await jwtVerify(token, secret); // Verify the token
-		// End Token
-		
-		const detailUser = await prisma.user.findUnique({
-			where: { id: Number(id) },
-		});
-
-		if (!detailUser) {
-			return NextResponse.json({ message: "User not found" }, { status: 404 });
-		}
-
-		return NextResponse.json(detailUser);
-	} catch (error) {
-		console.error("Error fetching user:", error);
+	if (!token) {
 		return NextResponse.json(
-			{ message: "Internal server error", error },
-			{ status: 500 },
+			{ error: "Authorization token is required" },
+			{ status: 401 },
 		);
 	}
+
+	// Verify the JWT token
+	const secret = new TextEncoder().encode(
+		process.env.JWT_SECRET || "default_secret",
+	);
+
+	try {
+		await jwtVerify(token, secret); // Verify the token
+	} catch (tokenError) {
+		console.error("Token verification failed:", tokenError);
+		return NextResponse.json(
+			{ error: "Invalid or expired token" },
+			{ status: 401 },
+		);
+	}
+
+	// Fetch user details
+	const detailUser = await prisma.user.findUnique({
+		where: { id: Number(id) },
+	});
+
+	if (!detailUser) {
+		return NextResponse.json({ message: "User not found" }, { status: 404 });
+	}
+
+	return NextResponse.json(detailUser);
+} catch (error) {
+	console.error("Error fetching user:", error);
+	return NextResponse.json(
+		{ message: "Internal server error", error },
+		{ status: 500 },
+	);
+}
 }
 
 export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {

@@ -3,6 +3,7 @@
 import * as React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import Times from "../components/Times";
 
 export default function Artikel() {
 
@@ -69,11 +70,21 @@ export default function Artikel() {
 	return (
 		<div className="w-full flex flex-col gap-3 min-h-screen justify-between">
 			<div className="flex flex-col pb-10 justify-end w-full h-96 bg-blue-500 rounded-[40px] mt-[-240px]">
-				<div className="mx-10">
-					<h1 className="font-bold text-4xl text-white">
-						Hi, {dataUser.name?.split(" ")[0]}!
-					</h1>
-					<p className="text-md text-white">Good Morning</p>
+				<div className="mx-10 flex-row flex justify-between items-center">
+					<div className="">
+						<h1 className="font-bold text-4xl text-white">
+							Hi, {dataUser.name?.split(" ")[0]}!
+						</h1>
+						<p className="text-md text-white">Good <Times /></p>
+					</div>
+					<Image
+						src="https://stikes.wdh.ac.id/wp-content/uploads/2023/12/cropped-cropped-cropped-LOGO_STIKes-PNG-e1702550833657.png"
+						alt="Donor Darah"
+						width={120}
+						height={120}
+						quality={100}
+						className="w-20 h-20 object-contain"
+					/>
 				</div>
 			</div>
 

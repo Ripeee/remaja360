@@ -7,6 +7,7 @@ import SplashScreen from "./components/SplashScreen";
 import { usePathname } from "next/navigation";
 import Navbar from "./components/Navbar";
 import { useRouter } from "next/navigation";
+import { decodeJwt } from "jose";
 
 const istokWeb = Istok_Web({
 	subsets: ["latin"],
@@ -36,9 +37,19 @@ export default function RootLayout({
 
 		if (token) {
 			// Jika token ada, arahkan ke dashboard
-			if (pathname === "/" || pathname === "/login" || pathname === "/signup") {
-				router.push("/dashboard"); // Jika login/signup, redirect ke dashboard
-			}
+				const payload = decodeJwt(token);
+				const isExpired = payload.exp && Date.now() >= payload.exp * 1000;
+
+				if (isExpired) {
+					alert("Session expired. Please log in again.");
+					localStorage.removeItem("token");
+					localStorage.removeItem("user");
+					window.location.href = "/login";
+				} else {
+					if (pathname === "/" || pathname === "/login" || pathname === "/signup") {
+						router.push("/dashboard"); // Jika login/signup, redirect ke dashboard
+					}
+				}
 		} else {
 			if (
 				(pathname !== "/" &&

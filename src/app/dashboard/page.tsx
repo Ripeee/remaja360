@@ -8,6 +8,7 @@ import ArticleCard from "@/app/components/ArticleCard";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
+import Times from "../components/Times";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
@@ -37,8 +38,10 @@ export default function Dashboard() {
 		},
 	];
 
+
 	const [name, setName] = React.useState("");
 
+	
 	React.useEffect(() => {
 		// This runs only on the client side
 		const user = localStorage.getItem("user");
@@ -49,16 +52,26 @@ export default function Dashboard() {
 	return (
 		<div className="w-full flex flex-col gap-4 mb-10">
 			<div className="flex flex-col pb-10 justify-end w-full h-96 bg-blue-500 rounded-[40px] mt-[-240px]">
-				<div className="mx-10">
-					<h1 className="font-bold text-4xl text-white">
-						Hi, {name.split(" ")[0]}!
-					</h1>
-					<p className="text-md text-white">Good Morning</p>
+				<div className="mx-10 flex-row flex justify-between items-center">
+					<div className="">
+						<h1 className="font-bold text-4xl text-white">
+							Hi, {name.split(" ")[0]}!
+						</h1>
+						<p className="text-md text-white">Good <Times /></p>
+					</div>
+					<Image
+						src="https://stikes.wdh.ac.id/wp-content/uploads/2023/12/cropped-cropped-cropped-LOGO_STIKes-PNG-e1702550833657.png"
+						alt="Donor Darah"
+						width={120}
+						height={120}
+						quality={100}
+						className="w-20 h-20 object-contain"
+					/>
 				</div>
 			</div>
 
 			{/* Swiper Section */}
-			<div className="swiper-container mx-10 h-80 rounded-xl mt-[-50px]">
+			<div className="swiper-container mx-10 h-80 rounded-xl mt-[-30px]">
 				<Swiper
 					modules={[Navigation, Pagination, Autoplay]}
 					spaceBetween={30}
@@ -108,9 +121,9 @@ export default function Dashboard() {
 				<div className="grid grid-cols-2 gap-6">
 					{article.map((article) => (
 						<Link
-							href={{ 
+							href={{
 								pathname: `/articles/${article.slug}`,
-								query: { slug: article.slug}
+								query: { slug: article.slug },
 							}}
 							key={article.id}
 							className="rounded-xl bg-black flex flex-col h-60">

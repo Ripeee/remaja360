@@ -40,6 +40,7 @@ export async function GET(req: Request) {
 
 		// Fetch result and their options
 		const result = await prisma.result.findMany();
+		const user = await prisma.user.findMany();
 
 		if (result.length === 0) {
 			return NextResponse.json(
@@ -48,8 +49,17 @@ export async function GET(req: Request) {
 			);
 		}
 
-		// Convert data to worksheet
-		const worksheet = utils.json_to_sheet(result);
+		// Merge user and result data
+		const mergedData = result.map((res) => {
+			const userData = user.find((u) => u.id === res.userId);
+			return {
+				...res,
+				...userData,
+			};
+		});
+
+		// Convert merged data to worksheet
+		const worksheet = utils.json_to_sheet(mergedData);
 
 		// Create workbook and append the worksheet
 		const workbook = utils.book_new();
