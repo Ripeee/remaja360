@@ -79,10 +79,6 @@ export default function Dashboard() {
 					</div>
 				</Link>
 			))}
-
-			<div className="flex justify-center font-bold mb-10">
-				Made with ❤️ in a Quiet Place
-			</div>
 		</div>
 	);
 }

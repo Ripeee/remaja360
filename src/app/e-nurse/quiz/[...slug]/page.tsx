@@ -6,7 +6,6 @@ import { useSearchParams } from "next/navigation";
 import axios from "axios";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import Times from "@/app/components/Times";
 
 export default function CategoryQuiz() {
 	const router = useRouter();
@@ -145,17 +144,17 @@ export default function CategoryQuiz() {
 	
 	return (
 		<div className="w-full flex flex-col gap-3 mb-24">
-			<div className="flex flex-col pb-10 justify-end w-full h-96 bg-blue-500 rounded-[40px] mt-[-240px]">
-				<div className="mx-10 flex-row flex justify-between items-center">
+			<div className="flex flex-col pb-10 justify-end w-full h-96 bg-blue-500 rounded-[40px] mt-[-240px] md:mb-4">
+				<div className="mx-4 md:mx-10 flex-row flex justify-between items-center">
 					<div className="">
-						<h1 className="font-bold text-4xl text-white">
+						<h1 className="font-bold text-2xl md:text-4xl text-white">
 							Hi, {dataUser.name?.split(" ")[0]}!
 						</h1>
-						<p className="text-md text-white">Good <Times /></p>
+						<p className="text-md text-white">Ayo jadi remaja cerdas !!</p>
 					</div>
 					<Image
 						src="https://stikes.wdh.ac.id/wp-content/uploads/2023/12/cropped-cropped-cropped-LOGO_STIKes-PNG-e1702550833657.png"
-						alt="Donor Darah"
+						alt="Logo Stikes"
 						width={120}
 						height={120}
 						quality={100}
@@ -166,7 +165,7 @@ export default function CategoryQuiz() {
 
 			<Link
 				href="/e-nurse/quiz"
-				className=" mx-10 text-md underline hover:text-slate-500">
+				className="mx-4 md:mx-10 text-md underline hover:text-slate-500">
 				Kembali Quiz
 			</Link>
 
@@ -189,7 +188,10 @@ export default function CategoryQuiz() {
 								{data.category?.title}
 							</h1>
 							<p className="font-bold text-center text-xl underline">
-								{"Pertanyaan " + (currentQuestionIndex + 1) + ' dari ' + data.questions?.length} 
+								{"Pertanyaan " +
+									(currentQuestionIndex + 1) +
+									" dari " +
+									data.questions?.length}
 							</p>
 							<div className="flex justify-center">
 								<Image
@@ -198,15 +200,15 @@ export default function CategoryQuiz() {
 									width={400}
 									height={400}
 									priority={true}
-									className="mt-[-40px] mx-4 mr-[-40px] bg-fixed w-full h-5/6"
+									className="mt-[-40px] mx-4 mr-[-40px] bg-fixed w-full md:h-5/6"
 								/>
 							</div>
 							{(data.questions?.length ?? 0) > 0 && (
 								<div>
-									<p className="text-xl mx-36 mt-[-300px] w-2/6 z-10">
+									<p className="text-xl mx-20 md:mx-36 mt-[-180px] md:mt-[-350px] md:w-2/6 h-32 z-10">
 										{data.questions?.[currentQuestionIndex]?.question}
 									</p>
-									<div className="flex flex-col gap-4 mx-10 my-8 rounded-xl mt-36">
+									<div className="flex flex-col gap-4 mx-10 my-8 rounded-xl mt-20 md:mt-36">
 										{data.questions?.[currentQuestionIndex]?.options?.map(
 											(o) => (
 												<button
@@ -265,11 +267,11 @@ export default function CategoryQuiz() {
 					)}
 					{showResult && (
 						<>
-							<h1 className="font-bold text-center text-4xl underline my-4">
+							<h1 className="font-bold text-center text-2xl md:text-4xl underline my-4">
 								{"HASIL QUIZ " + data.category?.title.toUpperCase()}
 							</h1>
 							{Number(calculateScore()) == 100 && (
-								<div className="mx-10 py-8 gap-4 flex flex-col bg-sky-200 rounded-2xl">
+								<div className="mx-4 md:mx-10 py-8 gap-4 flex flex-col bg-sky-200 rounded-2xl">
 									<Image
 										src={`/images/good-score.svg`}
 										alt="Quiz"
@@ -290,7 +292,7 @@ export default function CategoryQuiz() {
 							)}
 							{Number(calculateScore()) >= 80 &&
 								Number(calculateScore()) < 100 && (
-									<div className="mx-10 py-8 gap-4 flex flex-col bg-sky-200 rounded-2xl">
+									<div className="mx-4 md:mx-10 py-8 gap-4 flex flex-col bg-sky-200 rounded-2xl">
 										<Image
 											src={`/images/nice_score.svg`}
 											alt="Quiz"
@@ -311,7 +313,7 @@ export default function CategoryQuiz() {
 								)}
 							{Number(calculateScore()) > 50 &&
 								Number(calculateScore()) < 80 && (
-									<div className="mx-10 py-8 gap-4 flex flex-col bg-sky-200 rounded-2xl">
+									<div className="mx-4 md:mx-10 py-8 gap-4 flex flex-col bg-sky-200 rounded-2xl">
 										<Image
 											src={`/images/bad_score.svg`}
 											alt="Quiz"
@@ -332,7 +334,7 @@ export default function CategoryQuiz() {
 									</div>
 								)}
 							{Number(calculateScore()) <= 50 && (
-								<div className="mx-10 py-8 gap-4 flex flex-col bg-sky-200 rounded-2xl">
+								<div className="mx-4 md:mx-10 py-8 gap-4 flex flex-col bg-sky-200 rounded-2xl">
 									<Image
 										src={`/images/bad_score.svg`}
 										alt="Quiz"

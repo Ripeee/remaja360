@@ -34,7 +34,7 @@ export default function Opening() {
 				width={200}
         height={200}
         priority={true}
-				className="w-full mt-[-300px]"
+				className="w-full mt-[-240px] md:mt-[-300px]"
 			/>
 			<Image
 				src="/images/page-3.svg"
@@ -42,7 +42,7 @@ export default function Opening() {
 				width={500}
         height={500}
         priority={true}
-				className="mx-auto mt-[-200px] w-auto h-auto"
+				className="md:mx-auto mx-10 mt-[-100px] md:mt-[-200px] w-auto h-auto"
 			/>
 			{/* </div> */}
 			{/* <div className="flex flex-col pb-10 justify-end w-full h-96 bg-blue-500 rounded-[40px] mt-[-240px]">
@@ -52,11 +52,11 @@ export default function Opening() {
 				</div>
 			</div> */}
 
-				<h1 className="font-bold text-4xl text-center mt-4">Sehat Bareng, Yuk!</h1>
+				<h1 className="font-bold text-2xl md:text-4xl text-center mt-4">Sehat Bareng, Yuk!</h1>
 			<div className="flex justify-center mx-auto my-8">
 				<Link
 					href="/login"
-					className="bg-blue-700 rounded-full px-16 hover:bg-blue-400 disabled:bg-blue-50">
+					className="bg-blue-700 rounded-full px-8 md:px-16 hover:bg-blue-400 disabled:bg-blue-50">
 					<p className="text-white text-center font-bold text-2xl py-4 px-8">
 						Mulai Sekarang
 					</p>

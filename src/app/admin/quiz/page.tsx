@@ -6,8 +6,7 @@ import {useRouter} from "next/navigation";
 import axios from "axios";
 import dayjs from "dayjs";
 import Image from "next/image";
-import Times from "@/app/components/Times";
-
+import Link from "next/link";
 
 type ScoreData = {
 	id: number;
@@ -29,6 +28,7 @@ type ScoreData = {
 	phone_number: number;
 	score: number;
 	takenAt: string;
+	userAge: number;
 };
 
 export default function Dashboard() {
@@ -80,13 +80,33 @@ export default function Dashboard() {
 								headers: { Authorization: `Bearer ${tokenn}` },
 							},
 						);
-						
+
+						// Helper function to calculate age
+						const calculateAge = (dateOfBirth: string) => {
+							const birthDate = new Date(dateOfBirth);
+							const today = new Date();
+							let age = today.getFullYear() - birthDate.getFullYear();
+							const monthDiff = today.getMonth() - birthDate.getMonth();
+
+							// Adjust age if birthday hasn't occurred yet this year
+							if (
+								monthDiff < 0 ||
+								(monthDiff === 0 && today.getDate() < birthDate.getDate())
+							) {
+								age--;
+							}
+
+							return age;
+						};
+
 						return {
 							...result,
 							userName: userResponse.data.name,
-							userGender: userResponse.data.gender == 1 ? "Laki-Laki" : "Perempuan",
+							userGender:
+								userResponse.data.gender == 1 ? "Laki-Laki" : "Perempuan",
 							userDateBirth: userResponse.data.date_birth,
 							userPlaceBirth: userResponse.data.place_birth,
+							userAge: calculateAge(userResponse.data.date_birth),
 							userAddress: userResponse.data.address,
 							userSchoolOrigin: userResponse.data.school_origin,
 							userMajorClass: userResponse.data.major_class,
@@ -119,14 +139,14 @@ export default function Dashboard() {
 	const handleDownload = async () => {
 		
 		const formattedData = dataScore.map(
-			
 			// eslint-disable-next-line @typescript-eslint/no-unused-vars
-			({ id, userId, quizId, score, takenAt, userName, quizTitle, userGender, userPlaceBirth, userDateBirth, userAddress, userSchoolOrigin, userMajorClass, userGrade, userEmail, userPhoneNumber,  ...rest }) => ({
+			({ id, userId, quizId, score, takenAt, userName, userAge, quizTitle, userGender, userPlaceBirth, userDateBirth, userAddress, userSchoolOrigin, userMajorClass, userGrade, userEmail, userPhoneNumber,  ...rest }) => ({
 				...rest,
 				nama_lengkap: userName,
 				jenis_kelamin: userGender,
 				tempat_lahir: userPlaceBirth,
 				tanggal_lahir: userDateBirth,
+				usia: userAge,
 				alamat: userAddress,
 				asal_sekolah: userSchoolOrigin,
 				jurusan: userMajorClass,
@@ -152,22 +172,24 @@ export default function Dashboard() {
 
 	return (
 		<div className="w-full flex flex-col justify-between gap-4">
-			<div className="flex flex-col pb-10 justify-end w-full h-96 bg-blue-500 rounded-[40px] mt-[-240px]">
+			<div className="flex flex-col pb-10 justify-end w-full h-96 bg-blue-500 rounded-[40px] mt-[-140px]">
 				<div className="mx-10 flex-row flex justify-between items-center">
 					<div className="">
 						<h1 className="font-bold text-4xl text-white">
 							Hi, {name.split(" ")[0]}!
 						</h1>
-						<p className="text-md text-white">Good <Times /></p>
+						<p className="text-md text-white">Ayo jadi remaja cerdas !!</p>
 					</div>
-					<Image
-						src="https://stikes.wdh.ac.id/wp-content/uploads/2023/12/cropped-cropped-cropped-LOGO_STIKes-PNG-e1702550833657.png"
-						alt="Donor Darah"
-						width={120}
-						height={120}
-						quality={100}
-						className="w-20 h-20 object-contain"
-					/>
+					<Link href="/dashboard">
+						<Image
+							src="https://stikes.wdh.ac.id/wp-content/uploads/2023/12/cropped-cropped-cropped-LOGO_STIKes-PNG-e1702550833657.png"
+							alt="Donor Darah"
+							width={120}
+							height={120}
+							quality={100}
+							className="w-20 h-20 object-contain"
+						/>
+					</Link>
 				</div>
 			</div>
 
@@ -210,14 +232,12 @@ export default function Dashboard() {
 					</div>
 				</div>
 			) : (
-				<div className="flex justify-center items-center h-full mt-[-240px]">
+				<div className="flex justify-center items-center h-full">
 					<h1 className="font-bold text-4xl">Halaman ini Khusus Admin!!</h1>
 				</div>
 			)}
 			{/* Popular Articles Section */}
-			<p className="flex justify-center font-bold my-4">
-				Made with ❤️ in a Quiet Place
-			</p>
+			
 		</div>
 	);
 }

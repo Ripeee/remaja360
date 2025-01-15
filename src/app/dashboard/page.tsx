@@ -8,8 +8,7 @@ import ArticleCard from "@/app/components/ArticleCard";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-import Times from "../components/Times";
-
+ 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
 
@@ -50,18 +49,18 @@ export default function Dashboard() {
 	}, []);
 
 	return (
-		<div className="w-full flex flex-col gap-4 mb-10">
+		<div className="w-full flex flex-col gap-4 mb-20 md:mb-10">
 			<div className="flex flex-col pb-10 justify-end w-full h-96 bg-blue-500 rounded-[40px] mt-[-240px]">
-				<div className="mx-10 flex-row flex justify-between items-center">
+				<div className="mx-4 md:mx-10 flex-row flex justify-between items-center">
 					<div className="">
-						<h1 className="font-bold text-4xl text-white">
+						<h1 className="font-bold text-2xl md:text-4xl text-white">
 							Hi, {name.split(" ")[0]}!
 						</h1>
-						<p className="text-md text-white">Good <Times /></p>
+						<p className="text-md text-white">Ayo jadi remaja cerdas !!</p>
 					</div>
 					<Image
 						src="https://stikes.wdh.ac.id/wp-content/uploads/2023/12/cropped-cropped-cropped-LOGO_STIKes-PNG-e1702550833657.png"
-						alt="Donor Darah"
+						alt="Logo Stikes"
 						width={120}
 						height={120}
 						quality={100}
@@ -71,7 +70,7 @@ export default function Dashboard() {
 			</div>
 
 			{/* Swiper Section */}
-			<div className="swiper-container mx-10 h-80 rounded-xl mt-[-30px]">
+			<div className="swiper-container mx-4 md:mx-10 h-60 md:h-80 rounded-xl mt-[-30px]">
 				<Swiper
 					modules={[Navigation, Pagination, Autoplay]}
 					spaceBetween={30}
@@ -126,13 +125,10 @@ export default function Dashboard() {
 								query: { slug: article.slug },
 							}}
 							key={article.id}
-							className="rounded-xl bg-black flex flex-col h-60">
+							className="rounded-xl bg-black flex flex-col h-40 md:h-60">
 							<ArticleCard imageUrl={article.image} title={article.title} />
 						</Link>
 					))}
-				</div>
-				<div className="flex justify-center font-bold my-4">
-					Made with ❤️ in a Quiet Place
 				</div>
 			</div>
 		</div>

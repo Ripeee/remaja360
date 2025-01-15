@@ -195,12 +195,6 @@ export default function Signup() {
 						className="px-4 py-2 bg-blue-500 text-white text-xl font-bold rounded-full w-1/2 mx-auto">
 						Log Out
 					</button>
-
-					<div className="h-0.5 w-full bg-black"></div>
-
-					<div className="flex justify-center font-bold">
-						Made with ❤️ in a Quiet Place
-					</div>
 				</div>
 			)}
 		</div>

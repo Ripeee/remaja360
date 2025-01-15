@@ -3,8 +3,7 @@
 import * as React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import Times from "../components/Times";
-
+ 
 export default function Nurse() {
 	const [dataUser, setDataUser] = React.useState<{ name?: string }>({})
 
@@ -14,15 +13,15 @@ export default function Nurse() {
 			
 	}, [])
 	return (
-		<div className="w-full flex flex-col gap-3 h-screen justify-between">
+		<div className="w-full flex flex-col mb-20 md:mb-2">
 			<div className="">
-				<div className="flex flex-col pb-10 justify-end w-full h-96 bg-blue-500 rounded-[40px] mt-[-240px]">
-					<div className="mx-10 flex-row flex justify-between items-center">
+				<div className="flex flex-col pb-10 justify-end w-full h-96 bg-blue-500 rounded-[40px] mt-[-240px] mb-4">
+					<div className="mx-4 md:mx-10 flex-row flex justify-between items-center">
 						<div className="">
-							<h1 className="font-bold text-4xl text-white">
+							<h1 className="font-bold text-2xl md:text-4xl text-white">
 								Hi, {dataUser.name?.split(" ")[0]}!
 							</h1>
-							<p className="text-md text-white">Good <Times /></p>
+							<p className="text-md text-white">Ayo jadi remaja cerdas !!</p>
 						</div>
 						<Image
 							src="https://stikes.wdh.ac.id/wp-content/uploads/2023/12/cropped-cropped-cropped-LOGO_STIKes-PNG-e1702550833657.png"
@@ -38,10 +37,11 @@ export default function Nurse() {
 				<h1 className="font-bold text-center text-3xl underline mt-10">
 					E-Nurse
 				</h1>
-				<div className="flex flex-col gap-6 mx-10 my-16 rounded-xl">
+				
+				<div className="flex flex-col gap-6 mx-4 md:mx-10 my-8 md:my-16 rounded-xl">
 					<Link
 						href="/e-nurse/period"
-						className="flex justify-between px-10 rounded-xl h-40 bg-sky-100 mx-4 hover:text-white hover:bg-blue-500">
+						className="flex justify-between px-4 md:px-10 rounded-xl h-40 bg-sky-100 mx-4 hover:text-white hover:bg-blue-500">
 						<div className="py-4 h-full flex justify-between">
 							<div className="flex flex-col gap-2 justify-between">
 								<p className="text-2xl font-bold">Kalender Menstruasi</p>
@@ -61,9 +61,9 @@ export default function Nurse() {
 					</Link>
 					<Link
 						href="/e-nurse/quiz"
-						className="flex justify-between px-10 rounded-xl h-40 bg-sky-100 mx-4 hover:text-white hover:bg-blue-500">
+						className="flex justify-between px-4 md:px-10 rounded-xl h-40 bg-sky-100 mx-4 hover:text-white hover:bg-blue-500">
 						<div className="py-4 h-full flex justify-between">
-							<div className="flex flex-col gap-2 justify-between">
+							<div className="flex flex-col gap-2 justify-center">
 								<p className="text-2xl font-bold">Quiz</p>
 								<p className="text-md">Quiz dulu, yuk!</p>
 							</div>
@@ -78,9 +78,6 @@ export default function Nurse() {
 						/>
 					</Link>
 				</div>
-			</div>
-			<div className="flex justify-center font-bold mb-24">
-				Made with ❤️ in a Quiet Place
 			</div>
 		</div>
 	);

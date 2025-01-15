@@ -3,8 +3,7 @@
 import * as React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import Times from "../components/Times";
-// Import Swiper React components
+ // Import Swiper React components
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
@@ -40,22 +39,24 @@ export default function Dashboard() {
 
 	return (
 		<div className="w-full flex flex-col justify-between gap-4">
-			<div className="flex flex-col pb-10 justify-end w-full h-96 bg-blue-500 rounded-[40px] mt-[-240px]">
+			<div className="flex flex-col pb-10 justify-end w-full h-96 bg-blue-500 rounded-[40px] mt-[-140px]">
 				<div className="mx-10 flex-row flex justify-between items-center">
 					<div className="">
 						<h1 className="font-bold text-4xl text-white">
 							Hi, {name.split(" ")[0]}!
 						</h1>
-						<p className="text-md text-white">Good <Times /></p>
+						<p className="text-md text-white">Ayo jadi remaja cerdas !!</p>
 					</div>
-					<Image
-						src="https://stikes.wdh.ac.id/wp-content/uploads/2023/12/cropped-cropped-cropped-LOGO_STIKes-PNG-e1702550833657.png"
-						alt="Donor Darah"
-						width={120}
-						height={120}
-						quality={100}
-						className="w-20 h-20 object-contain"
-					/>
+					<Link href="/dashboard">
+						<Image
+							src="https://stikes.wdh.ac.id/wp-content/uploads/2023/12/cropped-cropped-cropped-LOGO_STIKes-PNG-e1702550833657.png"
+							alt="Donor Darah"
+							width={120}
+							height={120}
+							quality={100}
+							className="w-20 h-20 object-contain"
+						/>
+					</Link>
 				</div>
 			</div>
 
@@ -110,14 +111,11 @@ export default function Dashboard() {
 					</div>
 				</div>
 			) : (
-				<div className="flex justify-center items-center h-full mt-[-240px]">
+				<div className="flex justify-center items-center h-full">
 					<h1 className="font-bold text-4xl">Halaman ini Khusus Admin!!</h1>
 				</div>
 			)}
 			{/* Popular Articles Section */}
-			<p className="flex justify-center font-bold my-4">
-				Made with ❤️ in a Quiet Place
-			</p>
 		</div>
 	);
 }

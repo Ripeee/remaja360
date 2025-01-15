@@ -85,7 +85,13 @@ export default function RootLayout({
 				className={`${istokWeb.variable} ${inter.variable} antialiased md:bg-blue-300`}>
 				<div className="flex justify-center mx-auto bg-white min-h-screen max-w-screen-sm">
 					{pathname === "/" && showSplash ? <SplashScreen /> : children}
-					{!(pathname === "/" || pathname === "/login" || pathname === "/signup" || pathname === '/admin' || pathname === '/admin/quiz') && (<Navbar />)}
+					{!(
+						pathname === "/" ||
+						pathname === "/login" ||
+						pathname === "/signup" ||
+						pathname === "/admin" ||
+						pathname === "/admin/quiz"
+					) && <Navbar />}
 				</div>
 			</body>
 		</html>

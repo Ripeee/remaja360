@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 
-export default function ArtikelDetail() {
+export default function PTMDetail() {
 	const searchParams = useSearchParams();
   const [content, setContent] = React.useState<string>("");
   const [title, setTitle] = React.useState<string>("");
@@ -19,6 +19,7 @@ export default function ArtikelDetail() {
 	const limit = 150; // Jumlah kata per halaman
 
 	const slug = searchParams.get("slug");
+	console.log(slug, 'l')
 	const getToken = () => {
 		return localStorage.getItem("token");
 	};
@@ -73,11 +74,11 @@ export default function ArtikelDetail() {
 	}
 
   return (
-		<div className="w-full flex flex-col gap-3 overflow-auto">
-			<div className="flex flex-col pb-10 justify-end w-full h-96 bg-blue-500 rounded-[40px] mt-[-140px]">
-				<div className="mx-10 flex-row flex justify-between items-center">
+		<div className="w-full flex flex-col gap-3">
+			<div className="flex flex-col pb-10 justify-end w-full h-96 bg-blue-500 rounded-[40px] mt-[-240px] md:mt-[-140px]">
+				<div className="mx-4 md:mx-10 flex-row flex justify-between items-center">
 					<div className="">
-						<h1 className="font-bold text-4xl text-white">
+						<h1 className="font-bold text-2xl md:text-4xl text-white">
 							Hi, {dataUser.name?.split(" ")[0]}!
 						</h1>
 						<p className="text-md text-white">Ayo jadi remaja cerdas !!</p>
@@ -94,9 +95,9 @@ export default function ArtikelDetail() {
 			</div>
 
 			<Link
-				href="/articles"
-				className=" mx-10 text-md underline hover:text-slate-500">
-				Kembali Artikel
+				href="/articles/ptm"
+				className="mx-4 md:mx-10 text-md underline hover:text-slate-500">
+				{'Jenis Penyakit Tidak Menular'}
 			</Link>
 
 			<div className="flex flex-col justify-between h-full mb-24">
@@ -105,12 +106,12 @@ export default function ArtikelDetail() {
 				</h1>
 				{/* <DraftEditor /> */}
 
-				<div className="mx-8 text-start mt-[-40px]">
+				<div className="mx-4 md:mx-8 text-start md:mt-[-40px] my-4">
 					<div dangerouslySetInnerHTML={{ __html: content }}></div>
 					{/* <p className="whitespace-pre-line">{content}</p> */}
 				</div>
 
-				<div className="mx-16">
+				<div className="mx-4 md:mx-16">
 					<div className="flex items-center justify-between">
 						<button
 							onClick={() => handlePageChange(currentPage - 1)}

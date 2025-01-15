@@ -20,20 +20,26 @@ export default function Artikel() {
 	const data = [
 		{
 			id: 1,
-			slug: 'ptm',
-			title: 'PTM (Penyakit Tidak Menular)',
-			image: '/images/stop-virus.png',
+			slug: 'seks-bebas',
+			title: 'Seks Bebas',
+			image: '/images/sex.svg'
 		},
 		{
 			id: 2,
-			slug: 'pb',
-			title: 'Perilaku Beresiko',
-			image: '/images/icon-pb.jpeg'
+			slug: 'rokok',
+			title: 'Rokok',
+			image: '/images/icon-rokok.jpeg'
+		},
+		{
+			id: 3,
+			slug: 'narkoba',
+			title: 'Narkoba',
+			image: '/images/icon-narkoba.jpeg'
 		}
 	]
 
 	return (
-		<div className="mb-28 md:mb-2">
+		<div className="w-full md:flex flex-col gap-3 mb-28 md:mb-28">
 			<div className="flex flex-col pb-10 justify-end w-full h-96 bg-blue-500 rounded-[40px] mt-[-240px] mb-4">
 				<div className="mx-4 md:mx-10 flex-row flex justify-between items-center">
 					<div className="">
@@ -54,21 +60,26 @@ export default function Artikel() {
 			</div>
 
 			<Link
-				href="/dashboard"
+				href="/articles"
 				className="mx-4 md:mx-10 text-md underline hover:text-slate-500">
-				Kembali Dashboard
+				Kembali Artikel
 			</Link>
 
 			<h1 className="font-bold text-center text-2xl md:text-3xl underline my-8">
-				Halaman Artikel
+				Perilaku Beresiko
 			</h1>
 
 			{data.map((item) => (
-				<div className="flex flex-col mx-4 md:mx-10 mt-4 md:mt-8 rounded-xl" key={item.id}>
+				<div
+					className="flex flex-col mx-4 md:mx-10 mt-4 md:mt-4 md: rounded-xl"
+					key={item.id}>
 					<div className="flex flex-col gap-4">
 						<Link
-							href={`/articles/${item.slug}`}
-							className="flex justify-between px-6 md:px-10 rounded-xl h-40 bg-sky-100 mx-4 hover:text-white hover:bg-blue-500">
+							href={{
+								pathname: `/articles/ptm/${item.slug}`,
+								query: { slug: item.slug },
+							}}
+							className="flex justify-between px-10 rounded-xl h-40 bg-sky-100 mx-4 hover:text-white hover:bg-blue-500">
 							<div className="py-4 h-full flex justify-between items-center">
 								<div className="flex flex-col gap-2 justify-between">
 									<p className="text-xl md:text-2xl font-bold">{item.title}</p>

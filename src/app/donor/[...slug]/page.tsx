@@ -66,10 +66,6 @@ export default function DonorLocation() {
 					</div>
 				</div>
 			</div>
-
-			<div className="flex justify-center font-bold my-4">
-				Made with ❤️ in a Quiet Place
-			</div>
 		</div>
 	);
 }

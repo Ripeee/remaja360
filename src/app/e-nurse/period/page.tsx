@@ -5,8 +5,8 @@ import Calendar from 'react-calendar'
 import "react-calendar/dist/Calendar.css"; // Pastikan untuk mengimpor CSS
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faCircle } from "@fortawesome/free-solid-svg-icons";
-import Times from "@/app/components/Times";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Period() {
 	const [dataUser, setDataUser] = React.useState<{ name?: string }>({});
@@ -151,17 +151,17 @@ function getTileContent({ date }: { date: Date }) {
 
 	return (
 		<div className="w-full flex flex-col gap-3 mb-20">
-			<div className="flex flex-col pb-10 justify-end w-full h-96 bg-blue-500 rounded-[40px] mt-[-240px]">
-				<div className="mx-10 flex-row flex justify-between items-center">
+			<div className="flex flex-col pb-10 justify-end w-full h-96 bg-blue-500 rounded-[40px] mt-[-240px] md:mb-4">
+				<div className="mx-4 md:mx-10 flex-row flex justify-between items-center">
 					<div className="">
-						<h1 className="font-bold text-4xl text-white">
+						<h1 className="font-bold text-2xl md:text-4xl text-white">
 							Hi, {dataUser.name?.split(" ")[0]}!
 						</h1>
-						<p className="text-md text-white">Good <Times /></p>
+						<p className="text-md text-white">Ayo jadi remaja cerdas !!</p>
 					</div>
 					<Image
 						src="https://stikes.wdh.ac.id/wp-content/uploads/2023/12/cropped-cropped-cropped-LOGO_STIKes-PNG-e1702550833657.png"
-						alt="Donor Darah"
+						alt="Logo Stikes"
 						width={120}
 						height={120}
 						quality={100}
@@ -170,7 +170,13 @@ function getTileContent({ date }: { date: Date }) {
 				</div>
 			</div>
 
-			<h1 className="font-bold text-center text-2xl underline mt-10">
+			<Link
+				href="/e-nurse"
+				className="mx-4 md:mx-10 text-md underline hover:text-slate-500">
+				Kembali E-Nurse
+			</Link>
+
+			<h1 className="font-bold text-center text-2xl underline">
 				Kalender Menstruasi
 			</h1>
 			<div className="mx-auto">
@@ -182,7 +188,7 @@ function getTileContent({ date }: { date: Date }) {
 				/>
 			</div>
 
-			<div className="flex gap-2 mx-10 my-2 items-center">
+			<div className="grid grid-cols-4 gap-2 mx-10 my-2 items-center">
 				<div className="p-4 masa-siklus-selanjutnya"></div>
 				<p>Masa Siklus Selanjutnya</p>
 				<div className="p-4 masa-siklus"></div>
