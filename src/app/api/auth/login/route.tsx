@@ -60,40 +60,41 @@ function getRemainingTime(token: string) {
 
 export async function POST(req: NextRequest) {
 	try {
-		const { email, password } = await req.json();
+		const { emailOrUsername, password } = await req.json();
 
-		// Check if email and password are provided
-		if (!email || !password) {
+		// Validasi input awal
+		if (!emailOrUsername || !password) {
 			return NextResponse.json(
-				{ error: "Email and password are required" },
-				{ status: 400 },
+				{ error: "Email/username and password are required" },
+				{ status: 400 }
 			);
 		}
 
-		// Query the database for the user with the given email
+		// Cek apakah input adalah email atau username
+		const isEmail = emailOrUsername.includes("@");
 		const user = await prisma.user.findUnique({
-			where: {
-				email,
-			},
+			where: isEmail
+				? { email: emailOrUsername }
+				: { username: emailOrUsername },
 		});
 
-		// If the user is not found or password doesn't match, return an error
+		// Validasi user dan password
 		if (!user || user.password !== password) {
 			return NextResponse.json(
-				{ error: "Invalid credentials" },
-				{ status: 401 },
+				{ error: "Invalid email/username or password" },
+				{ status: 401 }
 			);
 		}
 
-		// Generate JWT token if credentials are correct
+		// Generate JWT token jika login berhasil
 		const secret = new TextEncoder().encode(process.env.JWT_SECRET || "default_secret");
-		const token = await new SignJWT({ email })
+		const token = await new SignJWT({ id: user.id, email: user.email, username: user.username })
 			.setProtectedHeader({ alg: "HS256" })
 			.setIssuedAt()
-			.setExpirationTime("1h") // Token expires in 1 hour
+			.setExpirationTime("1h") // Token kedaluwarsa dalam 1 jam
 			.sign(secret);
 
-		// Return the generated token
+		// Kembalikan response dengan token dan data user
 		return NextResponse.json(
 			{
 				token,
@@ -101,10 +102,11 @@ export async function POST(req: NextRequest) {
 				user: {
 					id: user.id,
 					email: user.email,
-					name: user.name, // Include any other data you want to send back
+					username: user.username,
+					name: user.name, // Tambahkan data lain yang diperlukan
 				},
 			},
-			{ status: 200 },
+			{ status: 200 }
 		);
 	} catch (error) {
 		console.error(error);

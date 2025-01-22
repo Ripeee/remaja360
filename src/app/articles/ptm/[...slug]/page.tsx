@@ -19,7 +19,8 @@ export default function PTMDetail() {
 	const limit = 150; // Jumlah kata per halaman
 
 	const slug = searchParams.get("slug");
-	console.log(slug, 'l')
+	const id = searchParams.get("id");
+
 	const getToken = () => {
 		return localStorage.getItem("token");
 	};
@@ -97,7 +98,7 @@ export default function PTMDetail() {
 			<Link
 				href="/articles/ptm"
 				className="mx-4 md:mx-10 text-md underline hover:text-slate-500">
-				{'Jenis Penyakit Tidak Menular'}
+				{"Jenis Penyakit Tidak Menular"}
 			</Link>
 
 			<div className="flex flex-col justify-between h-full mb-24">
@@ -110,6 +111,18 @@ export default function PTMDetail() {
 					<div dangerouslySetInnerHTML={{ __html: content }}></div>
 					{/* <p className="whitespace-pre-line">{content}</p> */}
 				</div>
+
+				{currentPage == totalPages && (
+					<div className="flex justify-center">
+						<Link
+							href={`/e-nurse/quiz/${slug}?id=${id}`}
+							className="rounded-xl w-full md:w-1/2 mx-4 px-8 hover:bg-green-600 disabled:bg-blue-50 bg-green-400">
+							<p className="text-white text-center font-bold text-md py-2">
+								Kerjakan Quiz
+							</p>
+						</Link>
+					</div>
+				)}
 
 				<div className="mx-4 md:mx-16">
 					<div className="flex items-center justify-between">

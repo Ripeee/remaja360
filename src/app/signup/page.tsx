@@ -12,6 +12,7 @@ export default function Signup() {
 	const [error, setError] = React.useState("")
 	const [gender, setGender] = React.useState("0")
 	const [fullname, setFullname] = React.useState("")
+	const [username, setUsername] = React.useState("")
 	const [dateBirth, setDateBirth] = React.useState("")
 	const [placeBirth, setPlaceBirth] = React.useState("")
 	const [address, setAddress] = React.useState("")
@@ -32,6 +33,7 @@ export default function Signup() {
 	const SignUp = () => {
 		const data = {
 			name: fullname,
+			username: username,
 			gender: gender,
 			date_birth: dateBirth,
 			place_birth: placeBirth,
@@ -52,6 +54,7 @@ export default function Signup() {
 		// console.log(data, "success");
 		if (
 			fullname !== "" ||
+			username !== "" ||
 			dateBirth !== "" ||
 			placeBirth !== "" ||
 			address !== "" ||
@@ -74,6 +77,15 @@ export default function Signup() {
 				})
 				.catch((error) => {
 					console.error("Error:", error);
+
+					// Periksa jika error karena username/email sudah terdaftar
+					if (error.response && error.response.status === 400) {
+						const errorMessage =
+							error.response.data?.error || "Username/Email sudah terdaftar!";
+						setError(errorMessage); // Set pesan error dari server
+					} else {
+						setError("Terjadi kesalahan saat pendaftaran. Silakan coba lagi.");
+					}
 				});
 			} else {
 				setError("Password harus Mempunyai Huruf dan Angka!");
@@ -96,6 +108,16 @@ export default function Signup() {
 						value={fullname}
 						autoComplete='name'
 						onChange={(e) => setFullname(e.target.value)}
+						className="px-4 h-12 mt-2 w-full bg-slate-200 rounded-xl text-lg"
+					/>
+				</div>
+				<div className="items-start">
+					<p className="font-bold text-xl">Nama Pengguna</p>
+					<input
+						type="text"
+						value={username}
+						autoComplete='name'
+						onChange={(e) => setUsername(e.target.value)}
 						className="px-4 h-12 mt-2 w-full bg-slate-200 rounded-xl text-lg"
 					/>
 				</div>

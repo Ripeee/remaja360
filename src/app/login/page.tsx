@@ -8,11 +8,11 @@ export default function Login() {
 
 	const router = useRouter();
 
-	const [email, setEmail] = React.useState("")
+	const [emailOrUsername, setEmailOrUsername] = React.useState("")
 	const [password, setPassword] = React.useState("")
 
 	function handleEmail(value: string) {
-		setEmail(value)
+		setEmailOrUsername(value)
 	}
 	function handlePassword(value: string | number) {
 		// console.log(value)
@@ -22,7 +22,7 @@ export default function Login() {
 	const login = async () => {
 		try {
 			const response = await axios.post("/api/auth/login", {
-				email,
+				emailOrUsername,
 				password,
 			});
 
@@ -54,7 +54,7 @@ export default function Login() {
 					<p className="font-bold text-xl">Email</p>
 					<input
 						type="text"
-						value={email}
+						value={emailOrUsername}
 						onChange={(e) => handleEmail(e.target.value)}
 						className="px-4 h-12 mt-2 w-full bg-slate-200 rounded-xl text-lg"
 					/>

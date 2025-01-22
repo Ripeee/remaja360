@@ -19,13 +19,13 @@ export default function PTM() {
 
 	const data = [
 		{
-			id: 1,
+			id: 4,
 			slug: 'anemia',
 			title: 'Anemia',
 			image: '/images/icon-anemia.jpeg',
 		},
 		{
-			id: 2,
+			id: 5,
 			slug: 'hipertensi',
 			title: 'Hipertensi',
 			image: '/images/hypertension.svg',
@@ -69,9 +69,9 @@ export default function PTM() {
 					key={item.id}>
 					<div className="flex flex-col gap-4">
 						<Link
-							href={{ 
+							href={{
 								pathname: `/articles/ptm/${item.slug}`,
-								query: { slug: item.slug }
+								query: { slug: item.slug, id: item.id },
 							}}
 							className="flex justify-between px-10 rounded-xl h-40 bg-sky-100 mx-4 hover:text-white hover:bg-blue-500">
 							<div className="py-4 h-full flex justify-between items-center">

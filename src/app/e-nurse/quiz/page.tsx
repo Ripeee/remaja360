@@ -8,15 +8,15 @@ export default function Quiz() {
 	const category = [
 		{
 			id: 1,
-			slug: "rokok",
-			name: "Rokok",
-			image: "/images/smoking.svg",
+			slug: "anemia",
+			name: "Anemia",
+			image: "/images/anemia.svg",
 		},
 		{
 			id: 2,
-			slug: "narkoba",
-			name: "Narkoba",
-			image: "/images/medicine.svg",
+			slug: "hipertensi",
+			name: "Hipertensi",
+			image: "/images/hypertension.svg",
 		},
 		{
 			id: 3,
@@ -26,15 +26,15 @@ export default function Quiz() {
 		},
 		{
 			id: 4,
-			slug: "anemia",
-			name: "Anemia",
-			image: "/images/anemia.svg",
+			slug: "rokok",
+			name: "Rokok",
+			image: "/images/smoking.svg",
 		},
 		{
 			id: 5,
-			slug: "hipertensi",
-			name: "Hipertensi",
-			image: "/images/hypertension.svg",
+			slug: "narkoba",
+			name: "Narkoba",
+			image: "/images/medicine.svg",
 		},
 	];
 	const [dataUser, setDataUser] = React.useState<{ name?: string }>({});
@@ -45,17 +45,17 @@ export default function Quiz() {
 	}, []);
 
 	// Reorder array
-	const desiredOrder = [
-		"Anemia",
-		"Hipertensi",
-		"Seks Bebas",
-		"Rokok",
-		"Narkoba",
-	];
+	// const desiredOrder = [
+	// 	"Anemia",
+	// 	"Hipertensi",
+	// 	"Seks Bebas",
+	// 	"Rokok",
+	// 	"Narkoba",
+	// ];
 
-	const reorderedCategory = desiredOrder.map((name) =>
-		category.find((item) => item.name === name),
-	);
+	// const reorderedCategory = desiredOrder.map((name) =>
+	// 	category.find((item) => item.name === name),
+	// );
 
 	return (
 		// <div className="w-full flex flex-col gap-3">
@@ -149,7 +149,7 @@ export default function Quiz() {
 			</h1>
 
 			<div className="flex flex-col gap-6 mx-4 md:mx-10 mt-8 mb-24 rounded-xl">
-				{reorderedCategory.map(
+				{category.map(
 					(item) =>
 						item && (
 							<Link

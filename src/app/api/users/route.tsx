@@ -71,13 +71,53 @@ export async function POST(req: Request) {
 
 		// Validasi email apakah sudah ada, but only for new users (not for updates)
 		if (!isUpdating) {
-			const existingUser = await prisma.user.findUnique({
+			const existingEmail = await prisma.user.findUnique({
 				where: { email: body.email },
 			});
 
-			if (existingUser) {
+			if (existingEmail) {
 				return NextResponse.json(
 					{ error: "Email sudah terdaftar" },
+					{ status: 400 },
+				);
+			}
+
+			const existingUsername = await prisma.user.findUnique({
+				where: { username: body.username },
+			});
+
+			if (existingUsername) {
+				return NextResponse.json(
+					{ error: "Username sudah digunakan" },
+					{ status: 400 },
+				);
+			}
+		} else {
+			// Validate unique email and username for updates
+			const existingEmail = await prisma.user.findFirst({
+				where: {
+					email: body.email,
+					NOT: { id: body.id }, // Exclude the current user being updated
+				},
+			});
+
+			if (existingEmail) {
+				return NextResponse.json(
+					{ error: "Email sudah terdaftar oleh pengguna lain" },
+					{ status: 400 },
+				);
+			}
+
+			const existingUsername = await prisma.user.findFirst({
+				where: {
+					username: body.username,
+					NOT: { id: body.id }, // Exclude the current user being updated
+				},
+			});
+
+			if (existingUsername) {
+				return NextResponse.json(
+					{ error: "Username sudah digunakan oleh pengguna lain" },
 					{ status: 400 },
 				);
 			}

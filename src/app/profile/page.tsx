@@ -14,6 +14,7 @@ export default function Signup() {
   const [maskedPassword, setMaskedPassword] = React.useState<string>("");
 	interface UserData {
 		name: string;
+		username: string;
 		gender: string;
 		date_birth: string;
 		place_birth: string;
@@ -111,6 +112,12 @@ export default function Signup() {
 						<p className="font-bold text-xl">Nama Lengkap</p>
 						<div className="flex items-center px-4 h-12 mt-2 w-full bg-slate-200 rounded-xl text-lg">
 							<p className="text-md">{data?.name}</p>
+						</div>
+					</div>
+					<div className="items-start">
+						<p className="font-bold text-xl">Nama Pengguna</p>
+						<div className="flex items-center px-4 h-12 mt-2 w-full bg-slate-200 rounded-xl text-lg">
+							<p className="text-md">{data?.username}</p>
 						</div>
 					</div>
 					<div className="items-start">

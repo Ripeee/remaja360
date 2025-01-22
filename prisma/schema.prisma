@@ -16,6 +16,8 @@ datasource db {
 model User {
   id            Int      @id @default(autoincrement())
   name          String
+  username      String   @unique
+  email         String   @unique
   gender        String
   place_birth   String
   date_birth    String
@@ -23,9 +25,10 @@ model User {
   school_origin String
   major_class   String
   grade         String
-  email         String   @unique
   phone_number  String
   password      String
+  pre_test      String @default("")
+  post_test     String @default("")
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
   articles      Article[] // One-to-Many relationship with Article

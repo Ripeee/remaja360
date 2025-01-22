@@ -19,7 +19,8 @@ export default function PBDetail() {
 	const limit = 150; // Jumlah kata per halaman
 
 	const slug = searchParams.get("slug");
-	console.log(slug, "l");
+	const id = searchParams.get("id");
+
 	const getToken = () => {
 		return localStorage.getItem("token");
 	};
@@ -99,7 +100,7 @@ export default function PBDetail() {
 				{"Jenis Perilaku Beresiko"}
 			</Link>
 
-			<div className="flex flex-col justify-between h-full mb-24">
+			<div className="flex flex-col gap-6 h-full mb-24">
 				<h1 className="text-center font-bold text-2xl underline my-4">
 					{title}
 				</h1>
@@ -109,6 +110,18 @@ export default function PBDetail() {
 					<div dangerouslySetInnerHTML={{ __html: content }}></div>
 					{/* <p className="whitespace-pre-line">{content}</p> */}
 				</div>
+
+				{currentPage == totalPages && (
+					<div className="flex justify-center">
+						<Link
+							href={`/e-nurse/quiz/${slug}?id=${id}`}
+							className="rounded-xl w-full md:w-1/2 mx-4 px-8 hover:bg-green-600 disabled:bg-blue-50 bg-green-400">
+							<p className="text-white text-center font-bold text-md py-2">
+								Kerjakan Quiz
+							</p>
+						</Link>
+					</div>
+				)}
 
 				<div className="mx-4 md:mx-16">
 					<div className="flex items-center justify-between">

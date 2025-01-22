@@ -19,19 +19,19 @@ export default function Artikel() {
 
 	const data = [
 		{
-			id: 1,
+			id: 3,
 			slug: 'seks-bebas',
 			title: 'Seks Bebas',
 			image: '/images/sex.svg'
 		},
 		{
-			id: 2,
+			id: 1,
 			slug: 'rokok',
 			title: 'Rokok',
 			image: '/images/icon-rokok.jpeg'
 		},
 		{
-			id: 3,
+			id: 2,
 			slug: 'narkoba',
 			title: 'Narkoba',
 			image: '/images/icon-narkoba.jpeg'
@@ -76,8 +76,8 @@ export default function Artikel() {
 					<div className="flex flex-col gap-4">
 						<Link
 							href={{
-								pathname: `/articles/ptm/${item.slug}`,
-								query: { slug: item.slug },
+								pathname: `/articles/pb/${item.slug}`,
+								query: { slug: item.slug, id: item.id },
 							}}
 							className="flex justify-between px-10 rounded-xl h-40 bg-sky-100 mx-4 hover:text-white hover:bg-blue-500">
 							<div className="py-4 h-full flex justify-between items-center">
